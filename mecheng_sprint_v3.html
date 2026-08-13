@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1a18" media="(prefers-color-scheme: dark)">
+<meta name="author" content="Eng. Albaraa Alghamdi">
+<meta name="copyright" content="© 2026 Eng. Albaraa Alghamdi. All rights reserved.">
+<title>Mech Eng 3-Day Sprint</title>
+<!--
+  ============================================================
+   MECHANICAL ENGINEERING · 3-DAY RETRIEVAL SPRINT
+   MADE BY ENG. ALBARAA ALGHAMDI
+   © 2026 — All rights reserved.
+  ============================================================
+-->
+<style>
+  :root{
+    --bg:#faf9f5;--surface:#fff;--surface-alt:#f1efe8;
+    --text:#1a1a17;--text-muted:#5f5e5a;--text-faint:#8a8983;
+    --border:rgba(0,0,0,.10);--border-strong:rgba(0,0,0,.22);
+    --success:#0F6E56;--success-soft:#E1F5EE;
+    --warn:#BA7517;--warn-soft:#FAEEDA;
+    --err:#9A2D2D;--err-soft:#FBEAEA;
+    --accent:#534AB7;--accent-soft:#EEEDFE;
+    --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06);
+    --thermo:#BA7517;--thermo-soft:#FAEEDA;
+    --heat:#993C1D;--heat-soft:#FAECE7;
+    --hvac:#185FA5;--hvac-soft:#E6F1FB;
+    --dyn:#534AB7;--dyn-soft:#EEEDFE;
+    --stress:#0F6E56;--stress-soft:#E1F5EE;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#1a1a18;--surface:#242422;--surface-alt:#2c2c2a;
+      --text:#f0efe9;--text-muted:#b4b2a9;--text-faint:#888780;
+      --border:rgba(255,255,255,.10);--border-strong:rgba(255,255,255,.25);
+      --success:#5DCAA5;--success-soft:#085041;
+      --warn:#EF9F27;--warn-soft:#633806;
+      --err:#F08A8A;--err-soft:#5C1A1A;
+      --accent:#AFA9EC;--accent-soft:#3C3489;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.4);
+      --thermo:#FAC775;--thermo-soft:#633806;
+      --heat:#F0997B;--heat-soft:#712B13;
+      --hvac:#85B7EB;--hvac-soft:#0C447C;
+      --dyn:#AFA9EC;--dyn-soft:#3C3489;
+      --stress:#5DCAA5;--stress-soft:#085041;
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;
+       padding:1.25rem 1rem calc(82px + env(safe-area-inset-bottom));
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+       background:var(--bg);color:var(--text);line-height:1.6;
+       display:flex;flex-direction:column;min-height:100vh;
+       overscroll-behavior-y:contain}
+  .wrap{width:100%;max-width:800px;margin:0 auto;flex:1;display:flex;flex-direction:column}
+  button,.opt,.chip,.tab,.mini-btn,.block-check{touch-action:manipulation}
+
+  .tabs{display:flex;gap:2px;margin-bottom:1rem;border-bottom:.5px solid var(--border);overflow-x:auto}
+  .tab{font-family:inherit;font-size:13px;font-weight:500;padding:8px 14px;border:none;background:transparent;
+       color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;
+       transition:all .15s;white-space:nowrap}
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--text);border-bottom-color:var(--text)}
+  .view{display:none;flex:1;flex-direction:column}
+  .view.active{display:flex}
+
+  h1{font-size:18px;font-weight:500;margin:0;letter-spacing:-.01em}
+  .title-row{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:.5rem}
+  .deck-meta{font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+  .progress-bar{height:3px;background:var(--surface-alt);border-radius:2px;overflow:hidden;margin-top:4px}
+  .progress-fill{height:100%;background:var(--text);width:0%;transition:width .3s}
+  .stats{display:flex;gap:1rem;margin-top:.5rem;font-size:12px;color:var(--text-muted)}
+  .stats span b{color:var(--text);font-weight:500}
+
+  .filters{display:flex;flex-wrap:wrap;gap:6px;margin:.75rem 0 .5rem}
+  .chip{font-size:12px;padding:5px 11px;border-radius:999px;border:.5px solid var(--border-strong);
+        background:var(--surface);color:var(--text-muted);cursor:pointer;transition:all .15s;
+        font-family:inherit;font-weight:500}
+  .chip:hover{background:var(--surface-alt)}
+  .chip.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+  .chip .ct{font-size:10px;opacity:.7;margin-left:3px}
+
+  .card-stage{flex:1;display:flex;align-items:center;justify-content:center;padding:1rem 0;min-height:290px}
+  .card{width:100%;background:var(--surface);border:.5px solid var(--border);border-radius:16px;
+        box-shadow:var(--shadow);padding:2rem 1.75rem;min-height:265px;display:flex;flex-direction:column;
+        cursor:pointer;user-select:none;transition:transform .18s}
+  .card:hover{transform:translateY(-1px)}
+  .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;gap:8px}
+  .card-num{font-size:11px;color:var(--text-faint);letter-spacing:.06em;font-weight:500;font-variant-numeric:tabular-nums}
+  .badges{display:flex;gap:6px;flex-wrap:wrap}
+  .cat-badge{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:500}
+  .cat-thermo{background:var(--thermo-soft);color:var(--thermo)}
+  .cat-heat{background:var(--heat-soft);color:var(--heat)}
+  .cat-hvac{background:var(--hvac-soft);color:var(--hvac)}
+  .cat-dyn{background:var(--dyn-soft);color:var(--dyn)}
+  .cat-stress{background:var(--stress-soft);color:var(--stress)}
+  .card-tag{font-size:11px;padding:3px 10px;border-radius:999px;background:var(--surface-alt);color:var(--text-muted);font-weight:500}
+  .card-tag.known{background:var(--success-soft);color:var(--success)}
+  .card-tag.skipped{background:var(--warn-soft);color:var(--warn)}
+  .card-topic{font-size:22px;font-weight:500;margin-bottom:.75rem;letter-spacing:-.01em}
+  .card-content{flex:1;font-size:15px;line-height:1.6}
+  .card-content .label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-faint);font-weight:500;margin-bottom:.5rem;display:block}
+  .card-content .question{color:var(--text-muted);font-size:16px}
+  .card-foot{margin-top:1.5rem;font-size:11px;color:var(--text-faint);text-align:center}
+
+  .nav,.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .nav{margin-bottom:.6rem}
+  button{font-family:inherit;font-size:13px;font-weight:500;padding:10px 14px;border:.5px solid var(--border-strong);
+         background:var(--surface);color:var(--text);border-radius:10px;cursor:pointer;
+         transition:background .15s,transform .08s;display:flex;align-items:center;justify-content:center;gap:6px}
+  button:hover{background:var(--surface-alt)}
+  button:active{transform:scale(.97)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  button.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+  button.primary:hover{opacity:.88;background:var(--text)}
+  button.success{background:var(--success-soft);color:var(--success);border-color:transparent}
+  button.warn{background:var(--warn-soft);color:var(--warn);border-color:transparent}
+
+  .done{text-align:center;padding:2rem 1rem}
+  .done h2{font-size:20px;font-weight:500;margin:0 0 .5rem}
+  .done p{color:var(--text-muted);font-size:14px;margin:0 0 1.5rem}
+
+  /* QUIZ */
+  .q-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;
+          box-shadow:var(--shadow);padding:1.5rem 1.5rem;margin-bottom:.75rem}
+  .q-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:8px;flex-wrap:wrap}
+  .q-num{font-size:11px;color:var(--text-faint);letter-spacing:.06em;font-weight:500}
+  .q-text{font-size:16px;line-height:1.55;margin-bottom:1rem}
+  .q-given{font-family:var(--mono);font-size:13px;background:var(--surface-alt);padding:8px 12px;
+           border-radius:8px;margin-bottom:1rem;color:var(--text-muted);line-height:1.7}
+  .opts{display:flex;flex-direction:column;gap:7px;margin-bottom:1rem}
+  .opt{font-family:inherit;font-size:14px;text-align:left;justify-content:flex-start;padding:11px 14px;
+       border-radius:9px;border:.5px solid var(--border-strong);background:var(--surface);
+       color:var(--text);cursor:pointer;transition:all .15s;line-height:1.45}
+  .opt:hover:not(:disabled){background:var(--surface-alt)}
+  .opt.correct{background:var(--success-soft);border-color:var(--success);color:var(--success);font-weight:500}
+  .opt.wrong{background:var(--err-soft);border-color:var(--err);color:var(--err)}
+  .opt.dim{opacity:.45}
+  .num-row{display:flex;gap:8px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+  .num-row input{font-family:var(--mono);font-size:15px;padding:10px 12px;border-radius:9px;
+                 border:.5px solid var(--border-strong);background:var(--bg);color:var(--text);width:150px}
+  .num-unit{font-size:13px;color:var(--text-muted)}
+  .feedback{font-size:13.5px;line-height:1.6;padding:12px 14px;border-radius:9px;margin-top:.25rem}
+  .feedback.ok{background:var(--success-soft);color:var(--success)}
+  .feedback.no{background:var(--err-soft);color:var(--err)}
+  .feedback b{font-weight:600}
+  .score-box{background:var(--surface);border:.5px solid var(--border);border-radius:14px;
+             padding:1.5rem;text-align:center;margin-bottom:1rem}
+  .score-num{font-size:34px;font-weight:500;letter-spacing:-.02em}
+  .score-sub{font-size:13px;color:var(--text-muted);margin-top:2px}
+
+  /* PROBLEMS */
+  .p-card{background:var(--surface);border:.5px solid var(--border);border-radius:14px;
+          padding:1.25rem 1.4rem;margin-bottom:.75rem}
+  .p-title{font-size:15px;font-weight:500;margin-bottom:.35rem}
+  .p-stem{font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:.75rem}
+  .p-given{font-family:var(--mono);font-size:12.5px;background:var(--surface-alt);padding:9px 12px;
+           border-radius:8px;margin-bottom:.85rem;color:var(--text-muted);line-height:1.75}
+  .step{border-left:2px solid var(--border);padding:0 0 0 14px;margin:0 0 14px 4px}
+  .step-h{font-size:12.5px;font-weight:500;color:var(--text);margin-bottom:3px}
+  .step-b{font-size:13px;color:var(--text-muted);line-height:1.65}
+  .step-eq{font-family:var(--mono);font-size:13px;color:var(--text);background:var(--surface-alt);
+           padding:7px 11px;border-radius:7px;margin-top:5px;display:block;line-height:1.7;overflow-x:auto}
+  .p-answer{background:var(--accent-soft);color:var(--accent);font-weight:500;font-size:14px;
+            padding:11px 14px;border-radius:9px;margin-top:.5rem}
+  .steps-wrap{display:none}
+  .steps-wrap.open{display:block}
+
+  /* PLAN */
+  .plan-intro{background:var(--surface);border:.5px solid var(--border);border-radius:12px;
+              padding:14px 16px;margin-bottom:1rem;font-size:13px;color:var(--text-muted);line-height:1.6}
+  .plan-intro b{color:var(--text);font-weight:500}
+  .setup-row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:1rem;
+             padding:14px 16px;background:var(--surface);border:.5px solid var(--border);border-radius:12px}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);font-weight:500}
+  .field input{font-family:inherit;font-size:14px;padding:8px 10px;border-radius:8px;
+               border:.5px solid var(--border-strong);background:var(--bg);color:var(--text)}
+  .day-block{margin-bottom:1.25rem}
+  .day-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 2px 8px;
+            border-bottom:.5px solid var(--border);margin-bottom:10px;gap:10px;flex-wrap:wrap}
+  .day-title{font-size:15px;font-weight:500}
+  .day-title .daynum{color:var(--text-faint);font-weight:400;margin-right:6px;font-size:13px}
+  .day-theme{font-size:12px;color:var(--text-muted)}
+  .day-range{font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums}
+  .block{display:flex;gap:12px;padding:12px 14px;background:var(--surface);border:.5px solid var(--border);
+         border-radius:10px;margin-bottom:6px;transition:border-color .15s,opacity .15s;align-items:flex-start}
+  .block:hover{border-color:var(--border-strong)}
+  .block.is-break{background:transparent;border-style:dashed;opacity:.75}
+  .block.is-done{opacity:.5}
+  .block.is-done .block-title{text-decoration:line-through}
+  .block-check{flex:0 0 auto;width:18px;height:18px;margin-top:2px;border-radius:5px;
+               border:1.5px solid var(--border-strong);background:transparent;cursor:pointer;
+               display:flex;align-items:center;justify-content:center;padding:0;font-size:11px}
+  .block-check.checked{background:var(--success);border-color:var(--success);color:#fff}
+  .block-time{flex:0 0 auto;width:86px;font-size:12px;color:var(--text-faint);font-variant-numeric:tabular-nums;padding-top:1px}
+  .block-body{flex:1;min-width:0}
+  .block-title{font-size:14px;font-weight:500;margin-bottom:2px}
+  .block-detail{font-size:12.5px;color:var(--text-muted);line-height:1.5}
+  .block-dur{flex:0 0 auto;font-size:11px;color:var(--text-faint);background:var(--surface-alt);
+             padding:2px 8px;border-radius:999px;margin-left:auto}
+  .block-actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .mini-btn{font-family:inherit;font-size:11.5px;font-weight:500;padding:5px 11px;border-radius:7px;
+            border:.5px solid var(--border-strong);background:transparent;color:var(--text-muted);
+            cursor:pointer;display:inline-flex;align-items:center;gap:4px}
+  .mini-btn:hover{background:var(--surface-alt);color:var(--text)}
+
+  .timer-bar{position:sticky;bottom:calc(76px + env(safe-area-inset-bottom));
+             margin-top:1rem;background:var(--surface);
+             border:.5px solid var(--border-strong);border-radius:12px;padding:12px 16px;
+             display:none;align-items:center;gap:14px;box-shadow:var(--shadow);flex-wrap:wrap}
+  .timer-bar.active{display:flex}
+  .timer-label{font-size:12px;color:var(--text-muted);flex:1;min-width:120px}
+  .timer-label b{display:block;color:var(--text);font-size:13px;font-weight:500}
+  .timer-clock{font-family:var(--mono);font-size:26px;font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .timer-clock.overtime{color:var(--warn)}
+  .timer-btns{display:flex;gap:6px}
+
+  footer{margin-top:1.25rem;padding-top:1rem;
+         margin-bottom:calc(78px + env(safe-area-inset-bottom));
+         border-top:.5px solid var(--border);
+         font-size:11px;color:var(--text-faint);text-align:center}
+
+  /* ── Vintage cheer on a correct answer ── */
+  .cheer{display:flex;align-items:center;gap:9px;margin-bottom:8px;
+         font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+         font-style:italic;font-weight:700;font-size:16px;letter-spacing:.01em;
+         color:var(--success);animation:cheerIn .34s cubic-bezier(.2,.9,.3,1.2) both}
+  .cheer .orn{font-style:normal;font-size:19px;line-height:1;opacity:.95;
+              animation:ornPop .45s cubic-bezier(.2,.9,.3,1.5) both}
+  .cheer .rule{flex:1;height:1px;background:currentColor;opacity:.28}
+  .cheer .orn-r{font-style:normal;font-size:13px;opacity:.55}
+  @keyframes cheerIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+  @keyframes ornPop{0%{opacity:0;transform:scale(.4) rotate(-25deg)}
+                    60%{opacity:1;transform:scale(1.25) rotate(6deg)}
+                    100%{opacity:.95;transform:scale(1) rotate(0)}}
+  @media (prefers-reduced-motion:reduce){
+    .cheer,.cheer .orn{animation:none}
+  }
+
+  /* ── Fixed credit bar ── */
+  .fixed-credit{position:fixed;left:0;right:0;bottom:0;z-index:60;
+                background:var(--surface);border-top:.5px solid var(--border-strong);
+                padding:8px 14px calc(8px + env(safe-area-inset-bottom));
+                display:flex;flex-direction:column;align-items:center;gap:2px;
+                backdrop-filter:saturate(180%) blur(8px)}
+  .fc-cheer{display:flex;align-items:center;gap:9px;
+            font-family:Georgia,"Iowan Old Style","Times New Roman",serif;
+            font-style:italic;font-weight:700;font-size:14.5px;letter-spacing:.01em;
+            color:var(--text);line-height:1.35;text-align:center}
+  .fc-cheer .orn{font-style:normal;font-size:15px;opacity:.8;line-height:1}
+  .fc-cheer.pop{animation:fcPop .5s cubic-bezier(.2,.9,.3,1.3) both;color:var(--success)}
+  .fc-cheer.pop .orn{animation:ornPop .5s cubic-bezier(.2,.9,.3,1.5) both}
+  @keyframes fcPop{0%{opacity:.3;transform:scale(.9)}
+                   55%{opacity:1;transform:scale(1.06)}
+                   100%{opacity:1;transform:scale(1)}}
+  .fc-credit{font-size:9.5px;font-weight:600;letter-spacing:.12em;
+             text-transform:uppercase;color:var(--text-faint)}
+  @media (prefers-reduced-motion:reduce){
+    .fc-cheer.pop,.fc-cheer.pop .orn{animation:none}
+  }
+  kbd{display:inline-block;padding:1px 6px;background:var(--surface-alt);border:.5px solid var(--border);
+      border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--text-muted)}
+
+  /* Inputs at 16px stop iOS from auto-zooming on focus */
+  .field input,.num-row input{font-size:16px}
+
+  @media (max-width:640px){
+    body{padding:.9rem .7rem calc(80px + env(safe-area-inset-bottom))}
+    .wrap{max-width:100%}
+
+    h1{font-size:16.5px}
+    .title-row{gap:.5rem}
+    .deck-meta{font-size:11.5px;white-space:nowrap}
+
+    /* Tabs: swipeable strip, no scrollbar */
+    .tabs{gap:0;scrollbar-width:none;-ms-overflow-style:none;
+          margin-left:-.7rem;margin-right:-.7rem;padding:0 .7rem}
+    .tabs::-webkit-scrollbar{display:none}
+    .tab{padding:9px 13px;font-size:13.5px}
+
+    .chip{padding:7px 13px;font-size:12.5px}
+    .filters{gap:5px;margin:.65rem 0 .4rem}
+
+    /* Card */
+    .card-stage{padding:.6rem 0;min-height:0}
+    .card{padding:1.35rem 1.15rem;min-height:240px;border-radius:14px}
+    .card-head{margin-bottom:1rem}
+    .card-num{font-size:10px}
+    .card-topic{font-size:19px;margin-bottom:.6rem}
+    .card-content{font-size:14.5px}
+    .card-content .question{font-size:15px}
+    .cat-badge,.card-tag{font-size:10.5px;padding:2px 8px}
+
+    /* Buttons: full-height thumb targets */
+    button{font-size:13px;padding:13px 8px;min-height:46px;border-radius:11px}
+    .nav,.actions{gap:6px}
+    .nav{margin-bottom:6px}
+
+    /* Quiz */
+    .q-card{padding:1.15rem 1.05rem;border-radius:12px}
+    .q-text{font-size:15.5px}
+    .opt{padding:13px 13px;font-size:14.5px;min-height:48px;align-items:center}
+    .num-row{gap:6px}
+    .num-row input{width:100%;flex:1 1 130px;padding:13px 12px;min-height:48px}
+    .num-row button{flex:0 0 auto;min-width:88px}
+    .feedback{font-size:13.5px;padding:12px 13px}
+    .cheer{font-size:15px;gap:7px}
+    .cheer .orn{font-size:18px}
+    .score-num{font-size:30px}
+
+    /* Problems */
+    .p-card{padding:1.15rem 1.05rem;border-radius:12px}
+    .p-stem{font-size:13.5px}
+    .p-given,.step-eq{font-size:12px;line-height:1.85;
+                      overflow-x:auto;-webkit-overflow-scrolling:touch;
+                      white-space:pre-wrap;word-break:break-word}
+    .step{padding-left:11px;margin-bottom:12px}
+    .mini-btn{padding:9px 13px;font-size:12.5px;min-height:40px}
+
+    /* Plan: stack the time above the text so nothing gets squeezed */
+    .setup-row{flex-direction:column;align-items:stretch;gap:12px;padding:13px 14px}
+    .setup-row button{width:100%;min-height:48px}
+    .day-head{flex-direction:column;gap:3px;align-items:flex-start}
+    .day-range{font-size:11.5px}
+    .block{flex-wrap:wrap;padding:12px 12px;gap:9px;align-items:center}
+    .block-check{width:24px;height:24px;margin-top:0;border-radius:7px;font-size:13px}
+    .block-time{width:auto;order:2;font-size:11.5px;padding-top:0;
+                display:flex;gap:5px;align-items:center}
+    .block-time br{display:none}
+    .block-time span::before{content:"– "}
+    .block-dur{order:3;margin-left:auto}
+    .block-body{order:4;flex:1 1 100%;min-width:0}
+    .block-title{font-size:14.5px}
+    .block-detail{font-size:12.5px}
+    .block-actions{gap:6px}
+
+    /* Timer sits above the fixed credit bar */
+    .timer-bar{bottom:calc(74px + env(safe-area-inset-bottom));
+               padding:11px 13px;gap:10px}
+    .timer-clock{font-size:23px}
+    .timer-btns button{min-height:42px;padding:10px 14px}
+    .timer-label{min-width:100%;order:-1}
+
+    .plan-intro{font-size:12.5px;padding:12px 14px}
+    footer{font-size:10.5px}
+  }
+
+  @media (max-width:380px){
+    .tab{padding:9px 10px;font-size:12.5px}
+    button{font-size:12px;padding:12px 5px}
+    .card-topic{font-size:17.5px}
+    .cheer{font-size:14px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="tabs">
+    <button class="tab active" data-view="study">Cards</button>
+    <button class="tab" data-view="quiz">Quiz</button>
+    <button class="tab" data-view="probs">Worked problems</button>
+    <button class="tab" data-view="plan">3-day plan</button>
+  </div>
+
+  <!-- ═══ CARDS ═══ -->
+  <div class="view active" id="view-study">
+    <div class="title-row">
+      <h1>Refresher · 100 cards</h1>
+      <div class="deck-meta">Card <span id="cur">1</span> / <span id="total">100</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="bar"></div></div>
+    <div class="stats">
+      <span>Known <b id="known-count">0</b></span>
+      <span>Skipped <b id="skip-count">0</b></span>
+      <span>Remaining <b id="remain-count">100</b></span>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="card-stage" id="stage"></div>
+    <div class="nav">
+      <button id="prev">← Previous</button>
+      <button id="flip" class="primary">Flip card</button>
+      <button id="next">Next →</button>
+    </div>
+    <div class="actions">
+      <button id="known" class="success">✓ Got it</button>
+      <button id="skip" class="warn">↷ Skip</button>
+      <button id="shuffle">⇄ Shuffle</button>
+    </div>
+  </div>
+
+  <!-- ═══ QUIZ ═══ -->
+  <div class="view" id="view-quiz">
+    <div class="title-row">
+      <h1>Section quizzes</h1>
+      <div class="deck-meta" id="quizMeta"></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="quizBar"></div></div>
+    <div class="filters" id="quizFilters" style="margin-top:.75rem"></div>
+    <div id="quizBody" style="margin-top:.5rem"></div>
+  </div>
+
+  <!-- ═══ PROBLEMS ═══ -->
+  <div class="view" id="view-probs">
+    <div class="title-row">
+      <h1>Worked numerical problems</h1>
+      <div class="deck-meta" id="probMeta">15 problems</div>
+    </div>
+    <div class="plan-intro" style="margin-top:.75rem">
+      Try each problem on paper <b>before</b> you open the solution. The steps follow the order you
+      would really use: find what is asked, choose the correct equation, check the units, then put in
+      the numbers.
+    </div>
+    <div class="filters" id="probFilters"></div>
+    <div id="probBody" style="margin-top:.5rem"></div>
+  </div>
+
+  <!-- ═══ PLAN ═══ -->
+  <div class="view" id="view-plan">
+    <div class="title-row">
+      <h1>3-day retrieval sprint</h1>
+      <div class="deck-meta"><span id="plan-done">0</span> / <span id="plan-total">0</span> blocks done</div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="plan-bar"></div></div>
+    <div class="plan-intro" style="margin-top:1rem">
+      <b>4.5 hours in total, 90 minutes each day.</b> The plan uses active recall, not re-reading.
+      You try to answer <i>before</i> you flip the card, every time. Each section ends with a quiz, so
+      you learn what you really know. On Days 2 and 3 you begin by recalling your hardest cards from
+      the day before. Day 3 mixes all five subjects together. This feels harder, and that is why it
+      works better.
+    </div>
+    <div class="setup-row">
+      <div class="field">
+        <label for="startDate">Start date</label>
+        <input type="date" id="startDate" value="2026-08-13">
+      </div>
+      <div class="field">
+        <label for="startTime">Daily start time</label>
+        <input type="time" id="startTime" value="09:00">
+      </div>
+      <button id="downloadIcs" class="primary">↓ Add to calendar (.ics)</button>
+      <button id="resetPlan">Reset all progress</button>
+    </div>
+    <div id="planBody"></div>
+  </div>
+
+  <div class="timer-bar" id="timerBar">
+    <div class="timer-label"><b id="timerTitle">—</b><span id="timerSub"></span></div>
+    <div class="timer-clock" id="timerClock">25:00</div>
+    <div class="timer-btns">
+      <button id="timerToggle" class="primary">Pause</button>
+      <button id="timerStop">Stop</button>
+    </div>
+  </div>
+
+  <footer>
+    <div>Shortcuts (Cards tab): <kbd>Space</kbd> flip · <kbd>←</kbd> <kbd>→</kbd> nav · <kbd>K</kbd> known · <kbd>S</kbd> skip</div>
+  </footer>
+</div>
+
+<div class="fixed-credit">
+  <div class="fc-cheer" id="bottomCheer">
+    <span class="orn">&#10086;</span>
+    <span class="fc-txt">Ready to start</span>
+    <span class="orn">&#10087;</span>
+  </div>
+  <div class="fc-credit">Made by Eng. Albaraa Alghamdi &middot; &copy; 2026</div>
+</div>
+
+<script>
+/* ══════════ CARDS ══════════ */
+const baseCards=[
+{c:"thermo",t:"First law (closed system)",q:"State it for a closed system.",a:"ΔU = Q − W. Internal energy change equals heat added minus work done by the system."},
+{c:"thermo",t:"First law (open system)",q:"Steady-flow energy equation?",a:"Q̇ − Ẇ = Σṁ_out(h + V²/2 + gz) − Σṁ_in(h + V²/2 + gz). For turbines, compressors, nozzles, heat exchangers."},
+{c:"thermo",t:"Second law",q:"Two classical statements?",a:"Kelvin-Planck: no engine converts all heat to work. Clausius: heat won't flow spontaneously cold→hot. Both give ΔS_universe ≥ 0."},
+{c:"thermo",t:"Entropy",q:"Definition and reversible vs real?",a:"dS = δQ_rev/T. Reversible: ΔS_universe = 0. Real: ΔS_universe > 0. A state property even though δQ is not."},
+{c:"thermo",t:"Carnot cycle",q:"Sequence and efficiency?",a:"Two isothermals + two adiabatics, all reversible. η = 1 − T_L/T_H in Kelvin. Upper bound for any engine between two reservoirs."},
+{c:"thermo",t:"Rankine cycle",q:"Four processes and components?",a:"1→2 pump, 2→3 boiler (heat in), 3→4 turbine, 4→1 condenser (heat out). Basis of steam power plants."},
+{c:"thermo",t:"Otto cycle",q:"Idealization and efficiency?",a:"Isentropic compression, const-V heat in, isentropic expansion, const-V heat out. η = 1 − 1/r^(k−1)."},
+{c:"thermo",t:"Diesel cycle",q:"Difference from Otto?",a:"Heat added at constant pressure. η = 1 − (1/r^(k−1))·[(r_c^k − 1)/(k(r_c − 1))]. Runs a higher compression ratio."},
+{c:"thermo",t:"Brayton cycle",q:"Components and use?",a:"Compressor → combustor → turbine, const-P heat addition. η = 1 − 1/r_p^((k−1)/k). Gas turbines and jet engines."},
+{c:"thermo",t:"Refrigeration cycle",q:"Reverse Rankine, four steps?",a:"Compressor → condenser (heat out) → expansion valve → evaporator (heat in). COP = Q_L/W_in."},
+{c:"thermo",t:"COP heat pump vs fridge",q:"Relation between them?",a:"COP_HP = COP_R + 1. Heat pump delivers Q_H = Q_L + W to the warm space; the fridge counts only Q_L removed."},
+{c:"thermo",t:"Enthalpy",q:"Definition and why it matters?",a:"h = u + Pv. Convenient for open systems because flow work is built in. Used in the steady-flow energy equation."},
+{c:"thermo",t:"Specific heats",q:"cp vs cv and key relation?",a:"cp = (∂h/∂T)_P, cv = (∂u/∂T)_V. Ideal gas: cp − cv = R, k = cp/cv. cp > cv because the gas does expansion work."},
+{c:"thermo",t:"Ideal gas law",q:"Forms and assumptions?",a:"PV = nRT or Pv = RT. Assumes negligible molecular volume and no intermolecular forces. Good at low P, high T."},
+{c:"thermo",t:"Phase change & latent heat",q:"Why does T stay constant?",a:"Energy goes into breaking bonds (h_fg), not raising temperature. P and T are locked by the saturation curve."},
+{c:"thermo",t:"Quality (x)",q:"Definition for two-phase mixture?",a:"x = m_vapor/m_total. Any property: y = y_f + x(y_g − y_f). x=0 sat liquid, x=1 sat vapor."},
+{c:"thermo",t:"Isentropic process",q:"Ideal gas relations?",a:"Pv^k = const, Tv^(k−1) = const, T·P^((1−k)/k) = const. Adiabatic and reversible."},
+{c:"thermo",t:"Isentropic efficiency",q:"Turbine and compressor forms?",a:"Turbine η_t = (h1 − h2)/(h1 − h2s). Compressor η_c = (h2s − h1)/(h2 − h1). Real turbines 0.8–0.92."},
+{c:"thermo",t:"Exergy (availability)",q:"Concept in one line?",a:"Maximum useful work as a system reaches equilibrium with the environment (T0, P0). Lost exergy = T0·S_gen."},
+{c:"thermo",t:"Reheat & regeneration",q:"Why use them in Rankine?",a:"Reheat raises mean heat-addition temperature and cuts turbine-exit moisture. Regeneration bleeds steam to preheat feedwater."},
+{c:"heat",t:"Three modes",q:"Equation for each.",a:"Conduction q″ = −k∇T. Convection q″ = h(T_s − T_∞). Radiation q″ = εσT⁴."},
+{c:"heat",t:"Fourier's law",q:"1D form and meaning of k?",a:"q″ = −k(dT/dx). k = thermal conductivity, W/m·K. Minus sign: heat flows down the gradient."},
+{c:"heat",t:"Heat equation",q:"General form?",a:"∂T/∂t = α∇²T + q̇/(ρcp), α = k/(ρcp). Steady, no generation: ∇²T = 0."},
+{c:"heat",t:"Thermal resistance",q:"R for wall, cylinder, convection?",a:"Wall L/(kA). Cylinder ln(r₂/r₁)/(2πLk). Convection 1/(hA). Add in series like resistors."},
+{c:"heat",t:"Biot number",q:"Definition and rule of thumb?",a:"Bi = hL_c/k_solid. Bi < 0.1 → lumped capacitance valid. Above that, internal gradients matter."},
+{c:"heat",t:"Lumped capacitance",q:"Temperature response?",a:"T(t) = T_∞ + (T_i − T_∞)e^(−t/τ), τ = ρVcp/(hA_s). Thermal mass over surface conductance."},
+{c:"heat",t:"Fourier number",q:"What does it represent?",a:"Fo = αt/L_c², dimensionless time for transient conduction. Fo > 0.2 → one-term approximation works."},
+{c:"heat",t:"Reynolds number (HT)",q:"Why it matters in convection?",a:"Re = ρVL/μ sets the flow regime. Higher Re thins the thermal boundary layer and raises h."},
+{c:"heat",t:"Prandtl number",q:"Definition and meaning?",a:"Pr = ν/α = μcp/k. Momentum vs thermal diffusivity. Air ≈ 0.7, water ≈ 7, liquid metals < 0.05."},
+{c:"heat",t:"Nusselt number",q:"Definition and use?",a:"Nu = hL/k_fluid, dimensionless h. Correlations give Nu = f(Re, Pr), then h = Nu·k/L."},
+{c:"heat",t:"Forced convection (pipe)",q:"Common turbulent correlation?",a:"Dittus-Boelter: Nu = 0.023 Re^0.8 Pr^n, n = 0.4 heating, 0.3 cooling."},
+{c:"heat",t:"Free convection",q:"Driving dimensionless group?",a:"Rayleigh Ra = gβ(T_s − T_∞)L³/(να). Above ~10⁹ on a vertical plate, flow turns turbulent."},
+{c:"heat",t:"Fins",q:"When are they useful?",a:"When Bi_fin is small: high k, thin section, low h. Efficiency η_fin = q_fin/q_max."},
+{c:"heat",t:"Heat exchanger types",q:"Parallel, counter, cross flow?",a:"Counterflow gives the largest ΔT_lm and is most effective. Parallel flow is limited. Crossflow sits between."},
+{c:"heat",t:"LMTD method",q:"What is it for?",a:"Q = UA·ΔT_lm, ΔT_lm = (ΔT₁ − ΔT₂)/ln(ΔT₁/ΔT₂). Use when all four temps are known."},
+{c:"heat",t:"NTU-effectiveness",q:"When to use it?",a:"When outlet temps are unknown. NTU = UA/C_min, ε = f(NTU, C_r), Q = ε C_min (T_h,in − T_c,in)."},
+{c:"heat",t:"Black body radiation",q:"Stefan-Boltzmann and Wien?",a:"E_b = σT⁴, σ = 5.67×10⁻⁸ W/m²K⁴. Wien: λ_max·T = 2898 μm·K."},
+{c:"heat",t:"Emissivity & gray body",q:"How is a real surface modelled?",a:"q″ = εσT⁴. Gray body: ε independent of λ. Kirchhoff: ε = α at equilibrium."},
+{c:"heat",t:"View factor",q:"Definition and rules?",a:"F_ij = fraction of radiation from i reaching j. Reciprocity A_iF_ij = A_jF_ji. Summation ΣF_ij = 1."},
+{c:"heat",t:"Critical insulation radius",q:"What happens for small pipes?",a:"r_cr = k_ins/h. Below r_cr, adding insulation increases heat loss because added area beats added resistance."},
+{c:"hvac",t:"Air conditioning — definition",q:"Definition and the five functions?",a:"Treating air to control simultaneously its temperature, humidity, cleanliness, velocity, air quality and distribution to meet occupant comfort. The five functions: cooling, heating, humidification, dehumidification, filtration."},
+{c:"hvac",t:"Refrigeration & ton of refrigeration",q:"Definition, types of cooling, and 1 TR?",a:"Removing heat from a body under controlled conditions to hold it below the surrounding temperature. Natural cooling needs no devices (air, water); industrial refrigeration does, from about +15 °C down to −60/−70 °C — below that it is cryogenics. 1 TR = 12 000 Btu/hr ≈ 3.5 kW."},
+{c:"hvac",t:"Psychrometrics & the seven properties",q:"What does it study, and which properties appear on the chart?",a:"The physical laws of dry air–water vapour mixtures. Dry air is N₂, O₂, Ar, CO₂; moist air is dry air + vapour; saturated air holds the maximum vapour. Seven chart properties: DBT, WBT, DPT, RH, ω, h, v. h = 1.022·t_DBT + ω(h_fg,DPT + 2.3·t_DPT) kJ/kg dry air; v = R_a·T/p_a with R_a = 287 J/kg·K."},
+{c:"hvac",t:"DBT, WBT and DPT",q:"How is each defined and measured?",a:"DBT: ordinary thermometer. WBT: same thermometer with the bulb wrapped in a wet wick exposed to the air. DPT: the saturation temperature at the vapour partial pressure — where moisture begins to condense. DBT and WBT come from a sling psychrometer. On the 100% RH curve all three are equal."},
+{c:"hvac",t:"Humidity ratio, degree of saturation, RH",q:"Give the three relations.",a:"ω = m_w/m_a = 0.62198·p_w/(p_at − p_w). Degree of saturation μ = ω/ω_s, where ω_s uses p_ws. Relative humidity RH = p_w/p_ws, expressed as a percentage. Remember p_w = f(DPT) and p_ws = f(DBT)."},
+{c:"hvac",t:"The nine psychrometric processes",q:"List them, and the direction of the separate ones.",a:"Sensible heating, sensible cooling, humidification, dehumidification, heating + humidification, heating + dehumidification, cooling + dehumidification, evaporative (adiabatic) cooling, adiabatic mixing. Separate processes: heating right and cooling left (horizontal, ω constant); humidification up and dehumidification down (vertical, DBT constant). The rest are common processes."},
+{c:"hvac",t:"Adiabatic mixing of two streams",q:"How is the mixing point found?",a:"Mass balance on dry air and vapour plus an energy balance put point M on the straight line between the two states, split by mass-flow ratio: ṁ_O/ṁ_R = (h_M − h_R)/(h_O − h_M). Humidification efficiency η_H = (ω₃ − ω₁)/(ω₂ − ω₁)."},
+{c:"hvac",t:"Sensible, latent, total heat and SHF",q:"Definitions and the ratio?",a:"Sensible heat changes DBT at constant moisture; latent heat changes moisture at constant DBT; Q_T = Q_S + Q_L. SHF = Q_S/(Q_S + Q_L), with 0 ≤ SHF ≤ 1. About 0.75–0.80 in a normal dry climate; near 0.6 means a heavy latent load. The alignment point O on the chart is 50% RH, 24 °C."},
+{c:"hvac",t:"Bypass factor, ADP and contact factor",q:"What do they measure?",a:"ADP is the effective coil surface temperature (the coil temperature). Air that fails to touch the coil is bypassed: BPF = (t_d2 − t_s)/(t_d1 − t_s) for a cooling coil — the same ratio holds in ω or h. Contact factor CF = 1 − BPF. A low BPF means a better coil."},
+{c:"hvac",t:"Four heat-flow terms in load calculation",q:"Name them and the key warning.",a:"Space heat gain (rate heat enters or is generated in the space), space cooling load (heat that must be removed to hold the design condition), space heat extraction rate (heat actually removed — equals the cooling load only if room temperature is constant), and cooling coil load (all space loads plus duct gain, duct leakage, fan heat and outdoor makeup air). Heat gain ≠ cooling load."},
+{c:"hvac",t:"Classification of cooling loads",q:"Two ways to classify?",a:"By kind of heat: sensible gain (no change in specific humidity) and latent gain. By environment — external: conduction through opaque surfaces, solar through glazing, plus sensible and latent from ventilation and infiltration; internal: people (sensible + latent), lighting, power loads and motors, appliances."},
+{c:"hvac",t:"Load calculation methods and CLTD",q:"Which methods, and what does CLTD do?",a:"TFM (most complex, computer based, widely used in HVAC&R), CLTD/CLF (tabulated, derived from TFM), TETD/TA (the older hand method), and HB/RTS (research, solved numerically). CLTD and CLF convert sensible heat gain into sensible cooling load: Q_rs = U·A·CLTD."},
+{c:"hvac",t:"Envelope heat gain",q:"Equations for opaque surfaces and glass?",a:"Opaque: Q = U·A·ΔT = U·A·(T_o − T_in), with 1/U = 1/h_o + Σ(x/k) + 1/h_i through the layers. Glass: conduction Q = U·A·ΔT plus solar Q = A·SHGF_max·SC·CLF, where SHGF_max and CLF depend on latitude, orientation and month, and SC on the shading device."},
+{c:"hvac",t:"Internal and ventilation gains",q:"Equations for lighting, people and ventilation?",a:"Lighting: Q_l = N·P·F_d·F_sa·CLF (F_sa ≈ 1.25 for fluorescent with ballast, 1.0 for bulbs; CLF = 1.0 if lights run 24 h). Occupants: Q_s,p = N·F_d·q_s·CLF and Q_l,p = N·F_d·q_l. Ventilation: q_s = ṁ_ven·c_p(T_o − T_R), q_l = ṁ_ven·h_fg(ω_o − ω_R), total q_ven = ṁ_ven(h_o − h_R)."},
+{c:"hvac",t:"Room total heat, RSHF and the summer cycle",q:"How do you size supply air and the coil?",a:"RTH = RTSH + RTLH and RSHF = RTSH/RTH. Supply air from RTH = ṁ_s(h_R − h_S); return air ṁ_R = ṁ_s − ṁ_o; mixing point from ṁ_O/ṁ_R = (h_M − h_R)/(h_O − h_M); cooling coil capacity = ṁ_s(h_M − h_S). Convert with 1 kW = 1/3.5 TR."},
+{c:"hvac",t:"DX vs chilled water systems",q:"How do they differ, and typical capacities?",a:"Selection depends on capacity and space, initial and running cost, reliability and flexibility, maintainability, architectural constraints. DX (unitary, single zone) cools air with refrigerant in the coil: window 0.5–3 TR, split 0.5–50 TR, package 3–50 TR. Chilled water (central, multi-zone) uses water in the coil with an air- or water-cooled condenser, 20–2000 TR. Both dehumidify as they cool."},
+{c:"hvac",t:"Central HVAC and water systems",q:"Types of each?",a:"Central HVAC: all-air, all-water, air-water. Water systems by use: chilled water (supplied 4.4–10 °C, returning 15.6–18.3 °C), evaporative-cooled, hot water, dual-temperature, condenser water. By operation: closed (no contact with air), open (air washer, cooling tower — needs more treatment), once-through (no recirculation). Capacity Q_w = ṁ_w·c_pw(T_we − T_wl); coil Q = U_o·A_o·ΔT_m using the LMTD."},
+{c:"hvac",t:"COP and the reversed Carnot cycle",q:"Formulas and the four processes?",a:"COP_R = Q_in/W_net,in = Q_L/(Q_H − Q_L); COP_HP = Q_out/W_net,in; and COP_HP = COP_R + 1. Reversed Carnot: 1-2 isentropic compression, 2-3 isothermal heat rejection, 3-4 isentropic expansion, 4-1 isothermal heat addition. COP_R = T_E/(T_C − T_E) with absolute temperatures."},
+{c:"hvac",t:"Vapour-compression refrigeration cycle",q:"Components, processes and analysis?",a:"Evaporator, compressor, condenser, expansion valve (plus receiver); four steps: evaporation, compression, condensation, expansion. Processes: 1-2 isentropic (S₁ = S₂), 2-3 isobaric heat rejection, 3-4 free expansion (h₃ = h₄), 4-1 isobaric evaporation. Q_in = ṁ(h₁ − h₄), Q_out = ṁ(h₂ − h₃), W = ṁ(h₂ − h₁), COP_R = (h₁ − h₄)/(h₂ − h₁). Compression inside the dome = wet cycle, in superheat = dry cycle. η_C = (h_2s − h₁)/(h₂ − h₁)."},
+{c:"hvac",t:"Refrigerants — classification and properties",q:"How are they grouped, and what makes one ideal?",a:"Primary refrigerants take part directly in the system; secondary ones are first cooled by a primary. Primary groups: halo-carbon (CFC, HCFC, HFC), azeotrope (R-500, R-502, R-503, R-504), inorganic (R-717 ammonia, R-729 air, R-744 CO₂, R-764 SO₂, R-718 water), hydro-carbon. Ideal: low boiling point, high critical temperature, high latent heat, low specific heat of liquid, non-toxic, non-flammable, non-corrosive, cheap, easy to detect when leaking. Standard comparison cycle: −15 °C evaporator, +30 °C condenser."},
+{c:"dyn",t:"Newton's 2nd law",q:"Statement and form?",a:"ΣF = ma for fixed mass, or ΣF = dp/dt generally. Valid only in inertial frames."},
+{c:"dyn",t:"Work-energy theorem",q:"Statement?",a:"W_net = ΔKE = ½m(v² − v₀²). Best when forces vary with position."},
+{c:"dyn",t:"Conservation of energy",q:"For mechanical systems?",a:"KE₁ + PE₁ + W_nc = KE₂ + PE₂. Gravity and springs are conservative."},
+{c:"dyn",t:"Linear momentum",q:"Definition and conservation?",a:"p = mv, ΣF_ext = dp/dt. Zero external force → momentum conserved."},
+{c:"dyn",t:"Impulse-momentum",q:"Statement?",a:"J = ∫F dt = Δp = mΔv. Useful for impacts where F(t) is unknown but its integral isn't."},
+{c:"dyn",t:"Coefficient of restitution",q:"Definition?",a:"e = −(v₂′ − v₁′)/(v₂ − v₁) along the impact line. e = 1 elastic, e = 0 perfectly plastic."},
+{c:"dyn",t:"Angular momentum",q:"Definition and conservation?",a:"H = r×p, or Iω about a fixed axis. ΣM = dH/dt. Zero moment → H conserved."},
+{c:"dyn",t:"Moment of inertia",q:"Concept and parallel-axis?",a:"I = ∫r²dm, rotational analog of mass. Parallel axis: I = I_cm + md²."},
+{c:"dyn",t:"Rotational kinematics",q:"Constant-α equations?",a:"ω = ω₀ + αt; θ = θ₀ + ω₀t + ½αt²; ω² = ω₀² + 2αΔθ. Mirrors linear kinematics."},
+{c:"dyn",t:"General plane motion",q:"Velocity of a point on a rigid body?",a:"v_B = v_A + ω×r_B/A. Acceleration a_B = a_A + α×r_B/A − ω²r_B/A."},
+{c:"dyn",t:"Instant center",q:"What is it?",a:"The point of a body in plane motion with zero velocity right then. Any other point's velocity is ω×r from it."},
+{c:"dyn",t:"Centripetal acceleration",q:"Formula and direction?",a:"a_n = v²/r = ω²r, toward the center of curvature. Needs net inward force mv²/r."},
+{c:"dyn",t:"Coriolis acceleration",q:"When does it appear?",a:"a_cor = 2ω×v_rel. In rotating frames or when a particle slides along a rotating member."},
+{c:"dyn",t:"SDOF free vibration",q:"Equation of motion?",a:"mẍ + cẋ + kx = 0. ω_n = √(k/m), ζ = c/(2√(km)). Critical damping returns fastest without overshoot."},
+{c:"dyn",t:"Forced vibration",q:"Steady-state amplitude?",a:"X/X_st = 1/√[(1 − r²)² + (2ζr)²], r = ω/ω_n. Peaks near r = 1, height set by damping alone."},
+{c:"dyn",t:"Transmissibility",q:"What does it measure?",a:"TR = F_transmitted/F_applied. For r > √2, TR < 1 → isolation. Below √2, mounts amplify."},
+{c:"dyn",t:"Lagrange's equation",q:"Form for a conservative system?",a:"d/dt(∂L/∂q̇) − ∂L/∂q = Q_nc, L = T − V. No free-body diagrams needed."},
+{c:"dyn",t:"Cam dynamics",q:"Common motion profile?",a:"Cycloidal gives smooth velocity and acceleration with no jerk discontinuity."},
+{c:"dyn",t:"Gyroscopic moment",q:"What and when?",a:"M = Iω·Ω, spin ω and precession Ω. The rotor resists axis change. Critical for turbines and rotors."},
+{c:"dyn",t:"Rocket equation",q:"Tsiolkovsky?",a:"Δv = v_e·ln(m₀/m_f). Logarithmic in mass ratio, which is why staging exists."},
+{c:"stress",t:"Stress vs strain",q:"Definitions?",a:"σ = F/A, force intensity per area. ε = ΔL/L, normalized deformation."},
+{c:"stress",t:"Hooke's law",q:"1D and 3D forms?",a:"σ = Eε. 3D isotropic: ε_x = [σ_x − ν(σ_y + σ_z)]/E. Shear τ = Gγ, G = E/[2(1+ν)]."},
+{c:"stress",t:"Poisson's ratio",q:"Definition and typical values?",a:"ν = −ε_lat/ε_axial. Steel ≈ 0.3, rubber ≈ 0.5, cork ≈ 0. Bounds −1 < ν < 0.5."},
+{c:"stress",t:"Stress-strain curve",q:"Key features for steel?",a:"Elastic → yield σ_y → strain hardening → ultimate σ_u → necking → fracture. Slope is E, area is toughness."},
+{c:"stress",t:"Yielding criteria",q:"Von Mises vs Tresca?",a:"Mises (distortion energy): σ_VM ≥ σ_y. Tresca (max shear): τ_max ≥ σ_y/2, more conservative."},
+{c:"stress",t:"Mohr's circle (2D)",q:"Construction?",a:"Plot (σ_x, −τ_xy) and (σ_y, τ_xy). Center (σ_x+σ_y)/2, radius √[((σ_x−σ_y)/2)² + τ_xy²]."},
+{c:"stress",t:"Principal stresses",q:"What and why?",a:"Eigenvalues of the stress tensor: normal stresses on planes with zero shear. Set max and min for failure checks."},
+{c:"stress",t:"Beam bending stress",q:"Formula and assumptions?",a:"σ = My/I. Pure bending, plane sections stay plane, linear elastic, small deflection. Max σ = Mc/I."},
+{c:"stress",t:"Beam shear stress",q:"Formula?",a:"τ = VQ/(Ib), Q = first moment of area above the cut. Peaks at the neutral axis for a rectangle."},
+{c:"stress",t:"Beam deflection",q:"Governing equation?",a:"EI·d²y/dx² = M(x). Integrate twice with boundary conditions, or use standard tabulated cases."},
+{c:"stress",t:"Torsion (circular shaft)",q:"Stress and twist?",a:"τ = Tr/J, max at the outer surface. Twist φ = TL/(JG). J = πd⁴/32 solid circular."},
+{c:"stress",t:"Combined loading",q:"How to handle it?",a:"Superpose normal stresses, build Mohr's circle, compare σ_VM to σ_y/n. Never add yield stresses scalar-wise."},
+{c:"stress",t:"Euler buckling",q:"Critical load and limits?",a:"P_cr = π²EI/(KL)². K = 1.0 pinned, 0.5 fixed-fixed, 2.0 cantilever. Only valid for slender columns."},
+{c:"stress",t:"Stress concentration",q:"Why and how handled?",a:"Notches raise local stress: σ_max = K_t σ_nom. Ductile static parts redistribute; brittle and fatigue do not."},
+{c:"stress",t:"Fatigue (S-N)",q:"Endurance limit and modifiers?",a:"S_e = k_a k_b k_c k_d k_e S_e′. Steel has a true endurance limit; aluminum does not."},
+{c:"stress",t:"Goodman line",q:"What does it model?",a:"σ_a/S_e + σ_m/S_u = 1/n for combined mean and alternating stress. Gerber and Soderberg are alternatives."},
+{c:"stress",t:"Castigliano's theorem",q:"Statement?",a:"δ_i = ∂U/∂P_i with U the strain energy. Gives deflection at the load point."},
+{c:"stress",t:"Plane stress vs plane strain",q:"Difference?",a:"Plane stress: thin, σ_z ≈ 0. Plane strain: thick, ε_z ≈ 0. Different effective constants."},
+{c:"stress",t:"Thick-walled cylinders",q:"Lamé equations?",a:"σ_r = A − B/r², σ_θ = A + B/r². Hoop stress peaks at the bore under internal pressure."},
+{c:"stress",t:"Factor of safety",q:"Definition and typical values?",a:"n = strength/applied stress. Static ductile 1.5–3, brittle 3–6, fatigue 2–4+."}
+];
+
+/* ══════════ QUIZ DATA (40 questions) ══════════ */
+const quizzes={
+thermo:[
+ {type:'mc',q:"A Carnot engine operates between reservoirs at 800 K and 300 K. Its maximum thermal efficiency is:",
+  opts:["37.5%","50.0%","62.5%","100%"],ans:2,
+  why:"η = 1 − T_L/T_H = 1 − 300/800 = 0.625. Both temperatures must be absolute — using °C here is the single most common slip."},
+ {type:'num',q:"An ideal Otto cycle has compression ratio r = 8 and k = 1.4. Find the thermal efficiency.",
+  unit:"%",ans:56.5,tol:1.0,
+  why:"η = 1 − 1/r^(k−1) = 1 − 1/8^0.4 = 1 − 1/2.297 = 0.565, so 56.5%. Note efficiency depends only on r and k, not on how much heat you add."},
+ {type:'mc',q:"Which of these is NOT a property of a system?",
+  opts:["Entropy","Enthalpy","Work","Internal energy"],ans:2,
+  why:"Work (and heat) are path functions — they depend on how you get between states, so you write δW not dW. Entropy, enthalpy and internal energy are state properties."},
+ {type:'num',q:"A steam turbine takes in steam at h₁ = 3200 kJ/kg and exhausts at h₂ = 2400 kJ/kg, with ṁ = 5 kg/s. Neglecting KE, PE and heat loss, find the power output.",
+  unit:"kW",ans:4000,tol:2,
+  why:"Ẇ = ṁ(h₁ − h₂) = 5 × 800 = 4000 kW. The adiabatic steady-flow energy equation collapses to just the enthalpy drop."},
+ {type:'mc',q:"In an isentropic process, which quantity stays constant?",
+  opts:["Temperature","Pressure","Entropy","Enthalpy"],ans:2,
+  why:"Isentropic means constant entropy — adiabatic and reversible. On a T-s diagram it plots as a vertical line."},
+ {type:'num',q:"A heat pump has COP_HP = 4.0. What is the COP of the same machine used as a refrigerator?",
+  unit:"",ans:3,tol:0.1,
+  why:"COP_HP = COP_R + 1, so COP_R = 3. The heat pump gets credit for Q_H = Q_L + W, the fridge only for Q_L."},
+ {type:'mc',q:"In a Rankine cycle, heat rejection occurs in the:",
+  opts:["Boiler","Turbine","Condenser","Pump"],ans:2,
+  why:"The condenser dumps heat to the environment at low temperature, turning wet steam back into saturated liquid for the pump."},
+ {type:'num',q:"Air has cp = 1.005 kJ/kg·K and cv = 0.718 kJ/kg·K. Find the specific heat ratio k.",
+  unit:"",ans:1.40,tol:0.02,
+  why:"k = cp/cv = 1.005/0.718 = 1.40. This value appears in every isentropic and air-standard cycle relation."}
+],
+heat:[
+ {type:'num',q:"A plane wall has k = 0.5 W/m·K, thickness 0.2 m, area 10 m², with a 30 K temperature difference across it. Find the heat rate.",
+  unit:"W",ans:750,tol:2,
+  why:"Q = kAΔT/L = (0.5 × 10 × 30)/0.2 = 750 W. Equivalently R = L/kA = 0.04 K/W and Q = ΔT/R."},
+ {type:'mc',q:"A Biot number of 0.05 tells you that:",
+  opts:["Internal gradients dominate","Lumped capacitance is valid","Flow is turbulent","Radiation dominates"],ans:1,
+  why:"Bi < 0.1 means conduction inside the body is fast compared with convection at its surface, so temperature is effectively uniform inside — lumped capacitance applies."},
+ {type:'num',q:"Compute the Biot number for h = 25 W/m²K, characteristic length 0.01 m, solid k = 50 W/m·K.",
+  unit:"",ans:0.005,tol:0.0005,
+  why:"Bi = hL_c/k = (25 × 0.01)/50 = 0.005. Far below 0.1, so lumped analysis is safe."},
+ {type:'mc',q:"The Prandtl number of air at room temperature is approximately:",
+  opts:["0.007","0.7","7","70"],ans:1,
+  why:"Air Pr ≈ 0.7, meaning momentum and thermal boundary layers are similar in thickness. Water is about 7, oils are in the hundreds."},
+ {type:'num',q:"A black body is at 1000 K. Find its emissive power.",
+  unit:"kW/m²",ans:56.7,tol:1.0,
+  why:"E_b = σT⁴ = 5.67×10⁻⁸ × 10¹² = 56,700 W/m² = 56.7 kW/m². The fourth power means small temperature rises give large radiation jumps."},
+ {type:'mc',q:"For the same four terminal temperatures, which arrangement gives the larger LMTD?",
+  opts:["Parallel flow","Counterflow","They're equal","Depends on U"],ans:1,
+  why:"Counterflow maintains a larger and more uniform temperature difference along the whole exchanger, so it needs less area for the same duty."},
+ {type:'num',q:"Convection from a surface: h = 100 W/m²K, A = 2 m², surface at 80 °C, fluid at 20 °C. Find the heat rate.",
+  unit:"W",ans:12000,tol:50,
+  why:"Q = hA(T_s − T_∞) = 100 × 2 × 60 = 12,000 W. Since it's a difference, °C and K are interchangeable here."},
+ {type:'mc',q:"The critical insulation radius for a cylinder is given by:",
+  opts:["r = h/k","r = k/h","r = kL/h","r = hL/k"],ans:1,
+  why:"r_cr = k_insulation/h. Below this radius, adding insulation increases heat loss because the extra surface area outweighs the extra conduction resistance."}
+],
+hvac:[
+ {type:'mc',q:"One ton of refrigeration (1 TR) is equivalent to:",
+  opts:["3 500 Btu/hr","12 000 Btu/hr","1 kW","24 000 Btu/hr"],ans:1,
+  why:"1 TR = 12 000 Btu/hr ≈ 3.5 kW. It is a rate of heat extraction, not a quantity of heat — so a 25 kW room load is about 7.1 TR."},
+ {type:'mc',q:"At any point on the 100% relative humidity curve, which temperatures are equal?",
+  opts:["DBT and WBT only","WBT and DPT only","DBT, WBT and DPT","None of them"],ans:2,
+  why:"At saturation the wick cannot evaporate anything and the air is already at its dew point, so all three readings collapse onto one value."},
+ {type:'num',q:"Moist air at 101.3 kPa has a water-vapour partial pressure of 2.0 kPa. Find the humidity ratio.",
+  unit:"kg/kg",ans:0.01253,tol:0.0005,
+  why:"ω = 0.62198·p_w/(p_at − p_w) = 0.62198 × 2.0/99.3 = 0.01253 kg/kg dry air. Note the denominator is the dry-air partial pressure, not the total."},
+ {type:'mc',q:"A sensible heat factor of 1.0 means:",
+  opts:["No sensible heat transfer","No latent heat transfer","The coil sits at ADP","Sensible and latent are equal"],ans:1,
+  why:"SHF = Q_S/(Q_S + Q_L). SHF = 1 means Q_L = 0, so moisture content never changes and the process line is horizontal on the chart."},
+ {type:'num',q:"A cooling coil has an ADP of 10 °C. Air enters at 27 °C and leaves at 15 °C. Find the bypass factor.",
+  unit:"",ans:0.294,tol:0.01,
+  why:"BPF = (t_d2 − t_s)/(t_d1 − t_s) = (15 − 10)/(27 − 10) = 5/17 = 0.294, so the contact factor is 0.706. Lower BPF means a more effective coil."},
+ {type:'mc',q:"In the ideal vapour-compression cycle, the process through the expansion valve is:",
+  opts:["Isentropic","Isobaric","Isenthalpic","Isothermal"],ans:2,
+  why:"Throttling is a free expansion with no work and no heat, so h₃ = h₄. Entropy rises — this is the one irreversible process kept in the ideal cycle."},
+ {type:'num',q:"A reversed Carnot refrigerator runs with an evaporator at −5 °C and a condenser at 35 °C. Find COP_R.",
+  unit:"",ans:6.7,tol:0.15,
+  why:"COP_R = T_E/(T_C − T_E) = 268/(308 − 268) = 6.7. Both temperatures must be absolute, and the heat-pump version of the same machine would be 7.7."},
+ {type:'mc',q:"R-717 is which refrigerant?",
+  opts:["Carbon dioxide","Ammonia","Sulphur dioxide","Air"],ans:1,
+  why:"R-717 is ammonia, from the inorganic group (R-729 air, R-744 CO₂, R-764 SO₂). It has the highest COP in the standard table at 5.74 and the lowest power per ton, but it is toxic and flammable between 16 and 25% by volume in air."},
+],
+dyn:[
+ {type:'num',q:"A spring-mass system has m = 2 kg and k = 200 N/m. Find the undamped natural frequency.",
+  unit:"rad/s",ans:10,tol:0.3,
+  why:"ω_n = √(k/m) = √(200/2) = √100 = 10 rad/s, which is 1.59 Hz. Stiffer spring raises it, more mass lowers it."},
+ {type:'mc',q:"A damping ratio ζ = 1 describes a system that is:",
+  opts:["Undamped","Underdamped","Critically damped","Overdamped"],ans:2,
+  why:"ζ = 1 is critical damping: the system returns to equilibrium in the shortest time without overshooting. Door closers are tuned near this."},
+ {type:'num',q:"A ball strikes the floor at 10 m/s with coefficient of restitution e = 0.8. Find the rebound speed.",
+  unit:"m/s",ans:8,tol:0.2,
+  why:"For impact against a fixed surface, v′ = e·v = 0.8 × 10 = 8 m/s. Kinetic energy retained is e² = 64%."},
+ {type:'mc',q:"For a vibration mount to actually isolate rather than amplify, the frequency ratio r = ω/ω_n must be:",
+  opts:["r < 1","r = 1","r > √2","r = √2 exactly"],ans:2,
+  why:"Transmissibility drops below 1 only when r > √2. Below that, the mount amplifies the disturbance — a soft mount on a slow machine can make things worse."},
+ {type:'num',q:"A disk with I = 0.5 kg·m² spins at ω = 20 rad/s. Find its angular momentum.",
+  unit:"kg·m²/s",ans:10,tol:0.2,
+  why:"H = Iω = 0.5 × 20 = 10 kg·m²/s. With no external moment this stays constant — pull mass inward, I drops, ω rises."},
+ {type:'mc',q:"The magnitude of Coriolis acceleration is:",
+  opts:["ω·v_rel","2ω·v_rel","ω²·r","2ω²·r"],ans:1,
+  why:"a_cor = 2ω × v_rel, so magnitude 2ω·v_rel when they're perpendicular. It appears only when a body moves relative to a rotating frame."},
+ {type:'num',q:"A car takes a curve of radius 50 m at 20 m/s. Find the centripetal acceleration.",
+  unit:"m/s²",ans:8,tol:0.2,
+  why:"a_n = v²/r = 400/50 = 8 m/s², about 0.8 g, pointing toward the centre. Friction must supply the corresponding force."},
+ {type:'num',q:"A rocket has exhaust velocity 3000 m/s and initial-to-final mass ratio of 3. Find Δv.",
+  unit:"m/s",ans:3296,tol:60,
+  why:"Δv = v_e ln(m₀/m_f) = 3000 × ln 3 = 3000 × 1.0986 = 3296 m/s. The logarithm is brutal — doubling the mass ratio doesn't double Δv."}
+],
+stress:[
+ {type:'num',q:"A rod carries 10 kN over a cross-section of 200 mm². Find the normal stress.",
+  unit:"MPa",ans:50,tol:1,
+  why:"σ = F/A = 10,000 N / 200 mm² = 50 N/mm² = 50 MPa. Remember 1 N/mm² is exactly 1 MPa — the most useful unit identity in solid mechanics."},
+ {type:'mc',q:"Von Mises stress is the standard criterion for predicting:",
+  opts:["Brittle fracture","Ductile yielding","Buckling","Creep rupture"],ans:1,
+  why:"It's a distortion-energy criterion, and ductile metals yield by shear distortion. Brittle materials need maximum-normal-stress or Mohr-Coulomb instead."},
+ {type:'num',q:"Steel with E = 200 GPa carries a stress of 100 MPa. Find the strain.",
+  unit:"",ans:0.0005,tol:0.00005,
+  why:"ε = σ/E = 100×10⁶ / 200×10⁹ = 5×10⁻⁴, or 500 microstrain. Strain is dimensionless."},
+ {type:'mc',q:"The effective length factor K for a fixed-free (cantilever) column is:",
+  opts:["0.5","0.7","1.0","2.0"],ans:3,
+  why:"K = 2.0 for fixed-free, the worst case. Since P_cr ∝ 1/(KL)², a cantilever carries only a quarter of the pinned-pinned buckling load at the same length."},
+ {type:'num',q:"A beam carries M = 5 kN·m. Section has I = 4×10⁶ mm⁴ and c = 50 mm. Find the maximum bending stress.",
+  unit:"MPa",ans:62.5,tol:1.5,
+  why:"σ = Mc/I = (5×10⁶ N·mm × 50 mm)/(4×10⁶ mm⁴) = 62.5 MPa. Keeping everything in N and mm avoids unit errors entirely."},
+ {type:'mc',q:"The theoretical upper limit on Poisson's ratio for an isotropic material is:",
+  opts:["0.25","0.33","0.5","1.0"],ans:2,
+  why:"ν = 0.5 corresponds to an incompressible material (no volume change under load), like rubber. Above it, bulk modulus would go negative."},
+ {type:'num',q:"A solid shaft of 40 mm diameter carries T = 500 N·m. Find the maximum shear stress.",
+  unit:"MPa",ans:39.8,tol:1.5,
+  why:"J = πd⁴/32 = 251,327 mm⁴. τ = Tr/J = (500,000 N·mm × 20 mm)/251,327 = 39.8 MPa, occurring at the outer surface."},
+ {type:'mc',q:"A typical factor of safety for static loading of a ductile material is:",
+  opts:["1.0–1.2","1.5–3","5–8","10–15"],ans:1,
+  why:"1.5–3 is standard when loads and material are well characterised. Brittle materials need 3–6, and fatigue or shock loading pushes higher."}
+]
+};
+
+/* ══════════ WORKED PROBLEMS (15) ══════════ */
+const problems=[
+{c:'thermo',t:'Carnot engine — efficiency, work, rejected heat',
+ stem:'A Carnot heat engine receives 1000 kJ of heat from a reservoir at 900 K and rejects heat to a sink at 300 K. Find the thermal efficiency, the net work output, and the heat rejected.',
+ given:'Q_H = 1000 kJ\nT_H = 900 K\nT_L = 300 K',
+ steps:[
+  {h:'Identify the governing relation',b:'For a Carnot cycle, efficiency depends only on the two absolute reservoir temperatures — not on the working fluid or the amount of heat.',eq:'η = 1 − T_L / T_H'},
+  {h:'Substitute the temperatures',b:'Both are already in Kelvin, so no conversion is needed.',eq:'η = 1 − 300/900 = 1 − 0.3333 = 0.6667'},
+  {h:'Get the net work from the definition of efficiency',b:'Efficiency is what you want over what you pay for: net work over heat supplied.',eq:'W = η · Q_H = 0.6667 × 1000 = 667 kJ'},
+  {h:'Apply the first law to close the energy balance',b:'Over a complete cycle the internal energy change is zero, so whatever heat is not converted to work must be rejected.',eq:'Q_L = Q_H − W = 1000 − 667 = 333 kJ'}
+ ],
+ answer:'η = 66.7%,  W = 667 kJ,  Q_L = 333 kJ'},
+
+{c:'thermo',t:'Steam turbine — steady flow with kinetic energy',
+ stem:'Steam enters an adiabatic turbine at h₁ = 3400 kJ/kg with velocity 50 m/s and leaves at h₂ = 2500 kJ/kg with velocity 120 m/s. Mass flow is 8 kg/s. Find the power output, including kinetic energy effects.',
+ given:'h₁ = 3400 kJ/kg,  V₁ = 50 m/s\nh₂ = 2500 kJ/kg,  V₂ = 120 m/s\nṁ = 8 kg/s,  adiabatic (Q̇ = 0)',
+ steps:[
+  {h:'Write the steady-flow energy equation',b:'One inlet, one outlet, adiabatic, and elevation change is negligible for a turbine.',eq:'Ẇ = ṁ[(h₁ − h₂) + (V₁² − V₂²)/2]'},
+  {h:'Evaluate the enthalpy term',b:'This is the dominant contribution in almost every turbine problem.',eq:'h₁ − h₂ = 3400 − 2500 = 900 kJ/kg'},
+  {h:'Evaluate the kinetic energy term — watch the units',b:'V² /2 comes out in J/kg, so divide by 1000 to get kJ/kg. The steam speeds up, so this term is negative: some enthalpy went into kinetic energy instead of shaft work.',eq:'(50² − 120²)/2 = (2500 − 14400)/2 = −5950 J/kg = −5.95 kJ/kg'},
+  {h:'Combine and multiply by mass flow',b:'Note the KE term changes the answer by less than 1% — which is why it is usually neglected, but only after you check.',eq:'Ẇ = 8 × (900 − 5.95) = 8 × 894.05 = 7152 kW'}
+ ],
+ answer:'Ẇ ≈ 7150 kW (7.15 MW).  KE contributes only −0.7%.'},
+
+{c:'thermo',t:'Otto cycle — efficiency and peak temperature',
+ stem:'An air-standard Otto cycle has compression ratio 8, intake at 300 K, and 800 kJ/kg of heat added. Take k = 1.4 and cv = 0.718 kJ/kg·K. Find the thermal efficiency, net work, and peak cycle temperature.',
+ given:'r = 8,  T₁ = 300 K\nq_in = 800 kJ/kg\nk = 1.4,  cv = 0.718 kJ/kg·K',
+ steps:[
+  {h:'Thermal efficiency from compression ratio alone',b:'For the air-standard Otto cycle, efficiency is a function only of r and k. Heat added does not appear.',eq:'η = 1 − 1/r^(k−1) = 1 − 1/8^0.4 = 1 − 1/2.297 = 0.565'},
+  {h:'Net work follows directly',b:'Efficiency times heat input.',eq:'w_net = η · q_in = 0.565 × 800 = 452 kJ/kg'},
+  {h:'Temperature after isentropic compression',b:'Use the isentropic relation between temperature and volume ratio.',eq:'T₂ = T₁ · r^(k−1) = 300 × 2.297 = 689 K'},
+  {h:'Peak temperature after constant-volume combustion',b:'At constant volume all the heat goes into internal energy, so q = cv·ΔT.',eq:'T₃ = T₂ + q_in/cv = 689 + 800/0.718 = 689 + 1114 = 1803 K'}
+ ],
+ answer:'η = 56.5%,  w_net = 452 kJ/kg,  T₃ = 1803 K'},
+
+{c:'heat',t:'Composite wall — series thermal resistance',
+ stem:'A wall consists of 0.2 m brick (k = 0.7 W/m·K) plus 0.05 m insulation (k = 0.04 W/m·K), area 20 m². Inside is 25 °C, outside is −5 °C. Find the heat loss.',
+ given:'Brick: L = 0.2 m, k = 0.7 W/m·K\nInsulation: L = 0.05 m, k = 0.04 W/m·K\nA = 20 m²,  ΔT = 30 K',
+ steps:[
+  {h:'Treat the layers as resistors in series',b:'Conduction resistance for a plane wall is thickness over conductivity times area.',eq:'R = L / (k·A)'},
+  {h:'Brick resistance',b:'',eq:'R_brick = 0.2 / (0.7 × 20) = 0.0143 K/W'},
+  {h:'Insulation resistance',b:'Note this thin layer contributes more than four times the resistance of the much thicker brick — that is the whole point of insulation.',eq:'R_ins = 0.05 / (0.04 × 20) = 0.0625 K/W'},
+  {h:'Total resistance and heat rate',b:'Series resistances simply add, then apply the thermal Ohm\u2019s law.',eq:'R_tot = 0.0143 + 0.0625 = 0.0768 K/W\nQ = ΔT / R_tot = 30 / 0.0768 = 391 W'}
+ ],
+ answer:'Q ≈ 391 W.  The insulation carries 81% of the total resistance.'},
+
+{c:'heat',t:'Lumped capacitance — cooling a steel sphere',
+ stem:'A 50 mm diameter steel sphere (ρ = 7800 kg/m³, cp = 460 J/kg·K, k = 50 W/m·K) at 200 °C is cooled in air at 25 °C with h = 100 W/m²K. How long to reach 100 °C?',
+ given:'d = 0.05 m,  ρ = 7800 kg/m³\ncp = 460 J/kg·K,  k = 50 W/m·K\nh = 100 W/m²K,  T_i = 200 °C,  T_∞ = 25 °C',
+ steps:[
+  {h:'Find the characteristic length',b:'L_c = V/A_s. For a sphere this reduces neatly to d/6.',eq:'L_c = (πd³/6)/(πd²) = d/6 = 0.05/6 = 0.00833 m'},
+  {h:'Check the Biot number before assuming lumped behaviour',b:'This validity check is the step most often skipped — and the one that invalidates the whole solution if it fails.',eq:'Bi = hL_c/k = (100 × 0.00833)/50 = 0.0167  <  0.1  ✓'},
+  {h:'Compute the time constant',b:'τ is thermal mass divided by surface conductance.',eq:'τ = ρ·L_c·cp/h = (7800 × 0.00833 × 460)/100 = 299 s'},
+  {h:'Apply the exponential decay and solve for t',b:'Rearrange the lumped-capacitance solution for time.',eq:'(T − T_∞)/(T_i − T_∞) = (100−25)/(200−25) = 0.4286\nt = −τ·ln(0.4286) = −299 × (−0.847) = 253 s'}
+ ],
+ answer:'t ≈ 253 s (about 4.2 minutes)'},
+
+{c:'heat',t:'Heat exchanger — sizing by LMTD',
+ stem:'A counterflow heat exchanger cools a hot stream from 120 °C to 60 °C while heating a cold stream from 20 °C to 80 °C. Duty is 100 kW and U = 500 W/m²K. Find the required area.',
+ given:'Hot: 120 → 60 °C\nCold: 20 → 80 °C (counterflow)\nQ = 100 kW,  U = 500 W/m²K',
+ steps:[
+  {h:'Find the terminal temperature differences',b:'In counterflow, pair the hot inlet with the cold outlet, and the hot outlet with the cold inlet.',eq:'ΔT₁ = 120 − 80 = 40 K\nΔT₂ = 60 − 20 = 40 K'},
+  {h:'Evaluate the log mean temperature difference',b:'When ΔT₁ = ΔT₂ the log-mean formula becomes 0/0, and the limit is simply that common value. Do not try to compute the logarithm.',eq:'ΔT_lm = ΔT₁ = ΔT₂ = 40 K'},
+  {h:'Solve the rate equation for area',b:'Convert the duty to watts to stay consistent with U.',eq:'A = Q/(U·ΔT_lm) = 100,000/(500 × 40) = 5.0 m²'}
+ ],
+ answer:'A = 5.0 m².  Equal terminal differences means a balanced counterflow exchanger.'},
+
+{c:'hvac',t:'Multilayer ceiling — U-value and heat gain',
+ stem:'A ceiling of 4 × 3 m is built up of 2 cm tiles (k = 1.1), 2 cm cement mortar (k = 0.68), 3 cm sand (k = 0.3), 15 cm concrete (k = 0.72) and 2 cm cement plaster (k = 0.72) W/m·K. Outside and inside film coefficients are 22.7 and 8.29 W/m²·°C. Outside air is at 40 °C and inside air at 25 °C. Find the overall heat-transfer coefficient and the heat gain.',
+ given:'A = 4 × 3 = 12 m²\nLayers: 0.02/1.1, 0.02/0.68, 0.03/0.3, 0.15/0.72, 0.02/0.72\nh_o = 22.7 W/m²·°C,  h_i = 8.29 W/m²·°C\nT_o = 40 °C,  T_in = 25 °C',
+ steps:[
+  {h:'Write the resistance network',b:'Heat crosses an outside air film, then each solid layer by conduction, then the inside air film. Resistances in series simply add.',eq:'1/U = 1/h_o + Σ(x/k) + 1/h_i'},
+  {h:'Sum the conduction resistances',b:'Take each layer thickness over its conductivity. The sand and the concrete dominate.',eq:'Σ(x/k) = 0.0182 + 0.0294 + 0.1000 + 0.2083 + 0.0278 = 0.3837'},
+  {h:'Add the two film resistances',b:'The inside film is the larger of the two because indoor air moves slowly.',eq:'1/U = 0.0441 + 0.3837 + 0.1206 = 0.5484 m²·°C/W'},
+  {h:'Invert for U, then apply the transmission equation',b:'Only the air-to-air temperature difference drives the flow, so no surface temperatures are needed.',eq:'U = 1.824 W/m²·°C;  Q = U·A·ΔT = 1.824 × 12 × 15 = 328.3 W'}
+ ],
+ answer:'U = 1.824 W/m²·°C,  Q ≈ 328 W'},
+
+{c:'hvac',t:'Fan coil — LMTD and sensible load',
+ stem:'A fan coil is fed with chilled water entering at 4 °C and leaving at 10 °C. Air enters at 45 °C and leaves at 12 °C. The outer coil area is 0.38 m² and the overall heat-transfer coefficient based on that area is 74.58 W/m²·°C. Find the sensible heat transfer.',
+ given:'T_c,in = 4 °C,  T_c,out = 10 °C\nT_h,in = 45 °C,  T_h,out = 12 °C\nA_o = 0.38 m²,  U_o = 74.58 W/m²·°C',
+ steps:[
+  {h:'Set up the two terminal differences',b:'Counterflow: pair the air inlet with the water outlet, and the air outlet with the water inlet.',eq:'ΔT₁ = 45 − 10 = 35 °C;  ΔT₂ = 12 − 4 = 8 °C'},
+  {h:'Take the log mean',b:'The temperature difference is not linear along the coil, so an arithmetic mean would overstate the driving force.',eq:'ΔT_m = (ΔT₁ − ΔT₂)/ln(ΔT₁/ΔT₂) = 27/ln(4.375) = 18.29 °C'},
+  {h:'Apply the rate equation',b:'U_o is already referred to the outer area, so use A_o directly.',eq:'Q = U_o·A_o·ΔT_m = 74.58 × 0.38 × 18.29'},
+  {h:'Sanity check',b:'The arithmetic mean would have been 21.5 °C and would have inflated the answer by about 18%. Always use the log mean when the two ends differ by more than roughly 2:1.',eq:'Q = 518.3 W'}
+ ],
+ answer:'ΔT_m = 18.29 °C,  Q ≈ 518 W'},
+
+{c:'hvac',t:'Summer cycle with return air — supply air and coil capacity',
+ stem:'A room has a sensible load of 20 kW and a latent load of 5 kW. Room air is at h_R = 52 kJ/kg, supply air at h_S = 32 kJ/kg and outdoor air at h_O = 85 kJ/kg. Fresh air is 0.25 kg/s. Find the room total load in TR, the RSHF, the supply and return air flows, the mixing-point enthalpy and the cooling coil capacity.',
+ given:'RTSH = 20 kW,  RTLH = 5 kW\nh_R = 52 kJ/kg,  h_S = 32 kJ/kg,  h_O = 85 kJ/kg\nṁ_O = 0.25 kg/s',
+ steps:[
+  {h:'Room total heat and RSHF',b:'The sensible and latent gains simply add, and their ratio fixes the slope of the room process line.',eq:'RTH = 20 + 5 = 25 kW = 25/3.5 = 7.14 TR;  RSHF = 20/25 = 0.80'},
+  {h:'Supply air mass flow',b:'The supply air must absorb the whole room load as it warms from supply to room condition.',eq:'ṁ_s = RTH/(h_R − h_S) = 25/(52 − 32) = 1.25 kg/s'},
+  {h:'Return air',b:'Whatever is not fresh air is recirculated.',eq:'ṁ_R = ṁ_s − ṁ_O = 1.25 − 0.25 = 1.00 kg/s'},
+  {h:'Mixing point M',b:'Fresh and return air mix before the coil, so M lies on the line R–O in proportion to the two flows.',eq:'ṁ_O/ṁ_R = (h_M − h_R)/(h_O − h_M) → 0.25 = (h_M − 52)/(85 − h_M) → h_M = 58.6 kJ/kg'},
+  {h:'Cooling coil capacity',b:'The coil must take the mixed air all the way down to the supply condition — always more than the room load, because of the fresh-air burden.',eq:'Q_coil = ṁ_s(h_M − h_S) = 1.25 × (58.6 − 32) = 33.3 kW'}
+ ],
+ answer:'RTH = 25 kW (7.14 TR),  RSHF = 0.80,  ṁ_s = 1.25 kg/s,  ṁ_R = 1.0 kg/s,  h_M = 58.6 kJ/kg,  Q_coil = 33.3 kW'},
+
+{c:'dyn',t:'SDOF system — damping characterisation',
+ stem:'A machine of 50 kg sits on a mount with k = 20,000 N/m and damping c = 200 N·s/m. Find the natural frequency, critical damping, damping ratio, and damped natural frequency.',
+ given:'m = 50 kg\nk = 20,000 N/m\nc = 200 N·s/m',
+ steps:[
+  {h:'Undamped natural frequency',b:'',eq:'ω_n = √(k/m) = √(20000/50) = √400 = 20 rad/s  (3.18 Hz)'},
+  {h:'Critical damping coefficient',b:'This is the damping that would just prevent oscillation.',eq:'c_cr = 2√(km) = 2√(20000 × 50) = 2 × 1000 = 2000 N·s/m'},
+  {h:'Damping ratio',b:'At ζ = 0.1 the system is lightly damped, so it will oscillate several cycles before settling — and it will amplify strongly at resonance.',eq:'ζ = c/c_cr = 200/2000 = 0.10  (underdamped)'},
+  {h:'Damped natural frequency',b:'Light damping barely shifts the frequency: only a 0.5% reduction here.',eq:'ω_d = ω_n√(1 − ζ²) = 20√(1 − 0.01) = 19.9 rad/s'}
+ ],
+ answer:'ω_n = 20 rad/s,  c_cr = 2000 N·s/m,  ζ = 0.10,  ω_d = 19.9 rad/s'},
+
+{c:'dyn',t:'Direct central impact',
+ stem:'A 2 kg block moving at 5 m/s strikes a stationary 3 kg block. The coefficient of restitution is 0.6. Find both velocities after impact.',
+ given:'m₁ = 2 kg, v₁ = 5 m/s\nm₂ = 3 kg, v₂ = 0\ne = 0.6',
+ steps:[
+  {h:'Write conservation of linear momentum',b:'No external impulsive forces act along the line of impact, so total momentum is unchanged.',eq:'m₁v₁ + m₂v₂ = m₁v₁′ + m₂v₂′\n10 = 2v₁′ + 3v₂′'},
+  {h:'Write the restitution equation',b:'Restitution relates the separation velocity to the approach velocity.',eq:'e = (v₂′ − v₁′)/(v₁ − v₂)\n0.6 = (v₂′ − v₁′)/5  →  v₂′ − v₁′ = 3'},
+  {h:'Solve the two equations simultaneously',b:'Substitute v₂′ = v₁′ + 3 into the momentum equation.',eq:'10 = 2v₁′ + 3(v₁′ + 3) = 5v₁′ + 9\nv₁′ = 0.2 m/s'},
+  {h:'Back-substitute and verify',b:'Always check momentum balances — it catches algebra slips instantly.',eq:'v₂′ = 0.2 + 3 = 3.2 m/s\nCheck: 2(0.2) + 3(3.2) = 0.4 + 9.6 = 10 ✓'}
+ ],
+ answer:'v₁′ = 0.2 m/s,  v₂′ = 3.2 m/s  (both forward)'},
+
+{c:'dyn',t:'Vibration isolation — selecting mount stiffness',
+ stem:'A 200 kg machine runs at 1500 rpm. Design an undamped isolation mount that transmits only 10% of the exciting force. Find the required stiffness.',
+ given:'m = 200 kg\nOperating speed = 1500 rpm\nTarget TR = 0.10,  negligible damping',
+ steps:[
+  {h:'Convert operating speed to angular frequency',b:'',eq:'ω = 1500 × 2π/60 = 157.1 rad/s'},
+  {h:'Use the undamped transmissibility relation',b:'Above resonance (r > √2) transmissibility simplifies, and the absolute value lets you drop the sign.',eq:'TR = 1/(r² − 1)\n0.10 = 1/(r² − 1)  →  r² = 11  →  r = 3.32'},
+  {h:'Back out the required natural frequency',b:'The mount must be soft enough that the machine runs well above its resonance.',eq:'ω_n = ω/r = 157.1/3.32 = 47.4 rad/s'},
+  {h:'Convert to stiffness',b:'Static deflection would be about 44 mm — a useful reality check that the mount is physically reasonable.',eq:'k = m·ω_n² = 200 × 47.4² = 449,000 N/m ≈ 449 kN/m'}
+ ],
+ answer:'k ≈ 449 kN/m  (ω_n = 47.4 rad/s, r = 3.32)'},
+
+{c:'stress',t:'Combined axial and torsional loading',
+ stem:'A solid shaft of 50 mm diameter carries an axial tensile force of 50 kN together with a torque of 1.5 kN·m. Find the von Mises stress.',
+ given:'d = 0.05 m\nF = 50 kN (axial tension)\nT = 1.5 kN·m',
+ steps:[
+  {h:'Axial normal stress',b:'',eq:'A = πd²/4 = π(0.05)²/4 = 1.963×10⁻³ m²\nσ = F/A = 50,000/1.963×10⁻³ = 25.5 MPa'},
+  {h:'Torsional shear stress at the surface',b:'Maximum shear occurs at the outer radius, where r = d/2.',eq:'J = πd⁴/32 = π(0.05)⁴/32 = 6.136×10⁻⁷ m⁴\nτ = Tr/J = (1500 × 0.025)/6.136×10⁻⁷ = 61.1 MPa'},
+  {h:'Combine using the von Mises criterion',b:'For this particular state (one normal plus one shear) the general expression reduces to a compact form worth memorising.',eq:'σ_VM = √(σ² + 3τ²)'},
+  {h:'Substitute',b:'Note the torsion dominates: shear enters with a factor of 3, so it contributes 95% of the result here.',eq:'σ_VM = √(25.5² + 3×61.1²) = √(650 + 11,200) = √11,850 = 109 MPa'}
+ ],
+ answer:'σ_VM ≈ 109 MPa.  Compare against σ_y/n to check the design.'},
+
+{c:'stress',t:'Simply supported beam under UDL',
+ stem:'A simply supported beam spans 4 m carrying a uniformly distributed load of 10 kN/m. The section is rectangular, 100 mm wide × 200 mm deep. Find the maximum bending stress.',
+ given:'L = 4 m,  w = 10 kN/m\nb = 100 mm,  h = 200 mm (deep)',
+ steps:[
+  {h:'Maximum bending moment at midspan',b:'Standard result for a simply supported beam with a uniform load.',eq:'M_max = wL²/8 = 10 × 4²/8 = 20 kN·m'},
+  {h:'Second moment of area about the neutral axis',b:'Bending about the strong axis, so the depth is cubed. Orienting the section the other way would cut I by a factor of four.',eq:'I = bh³/12 = 100 × 200³/12 = 6.667×10⁷ mm⁴'},
+  {h:'Distance to the extreme fibre',b:'',eq:'c = h/2 = 100 mm'},
+  {h:'Apply the flexure formula in consistent N-mm units',b:'',eq:'σ = Mc/I = (20×10⁶ × 100)/6.667×10⁷ = 30.0 MPa'}
+ ],
+ answer:'σ_max = 30 MPa (tension at the bottom, compression at the top)'},
+
+{c:'stress',t:'Euler buckling of a slender column',
+ stem:'A pinned-pinned steel column is 3 m long with a solid circular section of 60 mm diameter. Take E = 200 GPa. Find the critical buckling load.',
+ given:'L = 3 m,  pinned-pinned (K = 1.0)\nd = 60 mm,  E = 200 GPa',
+ steps:[
+  {h:'Second moment of area for a circular section',b:'Use πd⁴/64 for the area moment — do not confuse it with the polar moment πd⁴/32 used in torsion.',eq:'I = πd⁴/64 = π(0.06)⁴/64 = 6.36×10⁻⁷ m⁴'},
+  {h:'Select the effective length factor',b:'Both ends pinned gives K = 1.0, so the effective length equals the actual length.',eq:'K = 1.0  →  KL = 3.0 m'},
+  {h:'Apply the Euler formula',b:'',eq:'P_cr = π²EI/(KL)²\nP_cr = π² × 200×10⁹ × 6.36×10⁻⁷ / 3²'},
+  {h:'Evaluate and validate the slenderness assumption',b:'Radius of gyration r = d/4 = 15 mm, so slenderness KL/r = 3000/15 = 200. That is comfortably slender, so Euler applies rather than a short-column yield check.',eq:'P_cr = 1.256×10⁶/9 = 139,500 N ≈ 140 kN'}
+ ],
+ answer:'P_cr ≈ 140 kN.  Slenderness ratio 200 confirms Euler buckling governs.'}
+];
+
+const categories=[{key:'all',label:'All'},{key:'thermo',label:'Thermo'},{key:'heat',label:'Heat transfer'},
+                  {key:'hvac',label:'HVAC'},{key:'dyn',label:'Dynamics'},{key:'stress',label:'Stress'}];
+const catLabels={thermo:'Thermo',heat:'Heat transfer',hvac:'HVAC',dyn:'Dynamics',stress:'Stress'};
+
+/* ══════════ 3-DAY PLAN ══════════ */
+const planDays=[
+{day:1,theme:'Thermo + Heat transfer · encode, retrieve, then test',blocks:[
+ {id:'d1a',off:0,dur:20,type:'study',cat:'thermo',title:'Thermodynamics — card pass (20 cards)',
+  detail:'Read the question. Say your answer out loud. Then flip the card. Press Got it only if your answer was correct before flipping. About 60 seconds per card.'},
+ {id:'d1q1',off:20,dur:7,type:'quiz',cat:'thermo',title:'Thermo quiz — 8 questions',
+  detail:'No notes. The quiz shows you what you really know, not just what looks familiar.'},
+ {id:'d1r1',off:27,dur:5,type:'break',title:'Break — stand up and look at something far away'},
+ {id:'d1b',off:32,dur:20,type:'study',cat:'heat',title:'Heat transfer — card pass (20 cards)',
+  detail:'When a card names a dimensionless number, say which two things it compares before you flip. That is the part you will remember.'},
+ {id:'d1q2',off:52,dur:7,type:'quiz',cat:'heat',title:'Heat transfer quiz — 8 questions',
+  detail:'No notes. Write down every question you get wrong. You will review them tomorrow.'},
+ {id:'d1r2',off:59,dur:5,type:'break',title:'Break'},
+ {id:'d1p',off:64,dur:21,type:'prob',cat:'thermo',title:'Worked problems — Thermo & Heat transfer (6)',
+  detail:'Try each problem on paper first. Then open the solution. Choosing the right equation matters more than the maths.'},
+ {id:'d1w',off:85,dur:5,type:'wrap',title:'Wrap — log your 5 weakest items',
+  detail:'Write down the five topics you found hardest. You will start with these tomorrow.'}
+]},
+{day:2,theme:'HVAC + Dynamics · plus spaced recall of Day 1',blocks:[
+ {id:'d2a',off:0,dur:8,type:'recall',cat:'all',title:'Cold recall — yesterday\u2019s 5 weakest',
+  detail:'Do not flip first. Say or write the full answer from memory, then check it. Mistakes here help you learn.'},
+ {id:'d2b',off:8,dur:20,type:'study',cat:'hvac',title:'HVAC — card pass (20 cards)',
+  detail:'For each psychrometric card, draw the direction of the process on a rough chart. For the load and cycle cards, say what every symbol in the equation means before you flip.'},
+ {id:'d2q1',off:28,dur:7,type:'quiz',cat:'hvac',title:'HVAC quiz — 8 questions',detail:'No notes. Answer from memory only.'},
+ {id:'d2r1',off:35,dur:5,type:'break',title:'Break'},
+ {id:'d2c',off:40,dur:20,type:'study',cat:'dyn',title:'Dynamics — card pass (20 cards)',
+  detail:'When a card shows an equation, say what each symbol means before you flip. For vibration cards, know what ζ, ω_n and r each do.'},
+ {id:'d2q2',off:60,dur:7,type:'quiz',cat:'dyn',title:'Dynamics quiz — 8 questions',detail:'No notes. Answer from memory only.'},
+ {id:'d2r2',off:67,dur:5,type:'break',title:'Break'},
+ {id:'d2p',off:72,dur:13,type:'prob',cat:'hvac',title:'Worked problems — HVAC & Dynamics (6)',
+  detail:'Time is short here. Focus on the setup: find the correct equation and check the units. Then read the solution.'},
+ {id:'d2w',off:85,dur:5,type:'wrap',title:'Wrap — log your 5 weakest items',detail:'Same as yesterday. You will start Day 3 with these.'}
+]},
+{day:3,theme:'Stress + full interleaved mastery',blocks:[
+ {id:'d3a',off:0,dur:8,type:'recall',cat:'all',title:'Cold recall — Day 2 weakest',
+  detail:'Answer from memory first, then check. If you get something wrong on two different days, mark it for your final summary sheet.'},
+ {id:'d3b',off:8,dur:20,type:'study',cat:'stress',title:'Stress & solid mech — card pass (20 cards)',
+  detail:'For each formula, say which assumption it depends on: small deflection, linear elastic material, circular section, and so on.'},
+ {id:'d3q1',off:28,dur:7,type:'quiz',cat:'stress',title:'Stress quiz — 8 questions',detail:'No notes. Answer from memory only.'},
+ {id:'d3r1',off:35,dur:5,type:'break',title:'Break'},
+ {id:'d3p',off:40,dur:15,type:'prob',cat:'stress',title:'Worked problems — Stress (3)',
+  detail:'These three cover combined loading, bending and buckling. You will meet all three in almost every mechanical design check.'},
+ {id:'d3r2',off:55,dur:5,type:'break',title:'Break'},
+ {id:'d3c',off:60,dur:18,type:'study',cat:'all',title:'Full deck interleaved — all 100, rapid fire',
+  detail:'Shuffle all the cards. About 11 seconds each: read, answer in your head, flip, continue. Add every wrong answer to your final list.'},
+ {id:'d3q2',off:78,dur:8,type:'quiz',cat:'all',title:'Final mixed quiz — retake your weakest sections',
+  detail:'Reset and repeat the quizzes where your score was lowest. Two correct attempts means you have learned it.'},
+ {id:'d3w',off:86,dur:4,type:'wrap',title:'Wrap — build your one-page revision sheet',
+  detail:'Everything you still get wrong is what you have left to learn. Write it on one page. Review that page from now on.'}
+]}];
+
+/* ══════════ STATE ══════════ */
+const STORE='mecheng_sprint_v2';
+let cards=baseCards.map((c,i)=>({...c,id:i,status:'new'}));
+let activeCat='all',order=[],pos=0,flipped=false;
+let planDone={};
+let quizCat='thermo';
+let quizState={};   // key `${cat}:${i}` -> {given, correct}
+let probCat='all';
+let openSteps={};
+
+function save(){
+  try{
+    localStorage.setItem(STORE,JSON.stringify({
+      statuses:cards.map(c=>c.status),planDone,quizState,
+      startDate:document.getElementById('startDate').value,
+      startTime:document.getElementById('startTime').value
+    }));
+  }catch(e){}
+}
+function load(){
+  try{
+    const raw=localStorage.getItem(STORE); if(!raw)return;
+    const d=JSON.parse(raw);
+    if(d.statuses&&d.statuses.length===cards.length)cards.forEach((c,i)=>c.status=d.statuses[i]||'new');
+    if(d.planDone)planDone=d.planDone;
+    if(d.quizState)quizState=d.quizState;
+    if(d.startDate)document.getElementById('startDate').value=d.startDate;
+    if(d.startTime)document.getElementById('startTime').value=d.startTime;
+  }catch(e){}
+}
+
+/* ══════════ TABS ══════════ */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('view-'+t.dataset.view).classList.add('active');
+  });
+});
+function switchTo(view){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  document.querySelector('.tab[data-view="'+view+'"]').classList.add('active');
+  document.getElementById('view-'+view).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ══════════ CARDS ══════════ */
+const stage=document.getElementById('stage'),curEl=document.getElementById('cur'),
+ totalEl=document.getElementById('total'),bar=document.getElementById('bar'),
+ knownEl=document.getElementById('known-count'),skipEl=document.getElementById('skip-count'),
+ remainEl=document.getElementById('remain-count'),filtersEl=document.getElementById('filters');
+
+function renderChips(){
+  filtersEl.innerHTML='';
+  categories.forEach(cat=>{
+    const ct=cat.key==='all'?cards.length:cards.filter(c=>c.c===cat.key).length;
+    const b=document.createElement('button');
+    b.className='chip'+(activeCat===cat.key?' active':'');
+    b.innerHTML=cat.label+' <span class="ct">'+ct+'</span>';
+    b.addEventListener('click',()=>{activeCat=cat.key;rebuildOrder();pos=0;flipped=false;renderStudy();});
+    filtersEl.appendChild(b);
+  });
+}
+function rebuildOrder(){
+  order=activeCat==='all'?cards.map((_,i)=>i):cards.map((_,i)=>i).filter(i=>cards[i].c===activeCat);
+}
+function renderStudy(){
+  const scope=order.map(i=>cards[i]);
+  const known=scope.filter(c=>c.status==='known').length;
+  const skipped=scope.filter(c=>c.status==='skipped').length;
+  const total=scope.length;
+  knownEl.textContent=known;skipEl.textContent=skipped;
+  remainEl.textContent=total-known;totalEl.textContent=total;
+  bar.style.width=total?(known/total*100)+'%':'0%';
+  if(total===0){stage.innerHTML='<div class="done"><h2>No cards</h2></div>';renderChips();return;}
+  if(known===total){
+    stage.innerHTML='<div class="done"><h2>Section complete</h2><p>All '+total+' cards marked known.</p>'+
+      '<button onclick="resetFiltered()" class="primary">Restart this section</button></div>';
+    document.getElementById('prev').disabled=true;document.getElementById('next').disabled=true;
+    curEl.textContent=total;renderChips();save();return;
+  }
+  if(pos>=order.length)pos=order.length-1;
+  if(pos<0)pos=0;
+  const card=cards[order[pos]];
+  curEl.textContent=pos+1;
+  let tag='<span class="card-tag">new</span>';
+  if(card.status==='known')tag='<span class="card-tag known">✓ known</span>';
+  else if(card.status==='skipped')tag='<span class="card-tag skipped">skipped</span>';
+  stage.innerHTML='<div class="card" id="cardEl">'+
+    '<div class="card-head"><span class="card-num">CARD '+String(pos+1).padStart(3,'0')+' OF '+String(total).padStart(3,'0')+'</span>'+
+    '<div class="badges"><span class="cat-badge cat-'+card.c+'">'+catLabels[card.c]+'</span>'+tag+'</div></div>'+
+    '<div class="card-topic">'+card.t+'</div>'+
+    '<div class="card-content">'+(flipped?'<span class="label">Answer</span><div>'+card.a+'</div>'
+      :'<span class="label">Question</span><div class="question">'+card.q+'</div>')+'</div>'+
+    '<div class="card-foot">'+(flipped?'click to hide answer':'click to reveal answer')+'</div></div>';
+  document.getElementById('cardEl').addEventListener('click',flip);
+  document.getElementById('prev').disabled=pos===0;
+  document.getElementById('next').disabled=pos===order.length-1;
+  renderChips();save();
+}
+function flip(){flipped=!flipped;renderStudy();}
+function next(){if(pos<order.length-1){pos++;flipped=false;renderStudy();}}
+function prev(){if(pos>0){pos--;flipped=false;renderStudy();}}
+function markKnown(){
+  cards[order[pos]].status='known';flipped=false;
+  if(pos<order.length-1)pos++;
+  renderStudy();
+  if(typeof setBottomCheer==='function')setBottomCheer(Math.floor(Math.random()*10000),true);
+}
+function markSkip(){cards[order[pos]].status='skipped';flipped=false;if(pos<order.length-1)pos++;else pos=0;renderStudy();}
+function shuffleDeck(){for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}pos=0;flipped=false;renderStudy();}
+function resetFiltered(){order.forEach(i=>cards[i].status='new');rebuildOrder();pos=0;flipped=false;renderStudy();}
+window.resetFiltered=resetFiltered;
+document.getElementById('flip').addEventListener('click',flip);
+document.getElementById('next').addEventListener('click',next);
+document.getElementById('prev').addEventListener('click',prev);
+document.getElementById('known').addEventListener('click',markKnown);
+document.getElementById('skip').addEventListener('click',markSkip);
+document.getElementById('shuffle').addEventListener('click',shuffleDeck);
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+  if(!document.getElementById('view-study').classList.contains('active'))return;
+  if(e.code==='Space'){e.preventDefault();flip();}
+  else if(e.key==='ArrowRight')next();
+  else if(e.key==='ArrowLeft')prev();
+  else if(e.key.toLowerCase()==='k')markKnown();
+  else if(e.key.toLowerCase()==='s')markSkip();
+});
+
+/* ══════════ QUIZ ══════════ */
+const quizBody=document.getElementById('quizBody'),quizFilters=document.getElementById('quizFilters'),
+      quizMeta=document.getElementById('quizMeta'),quizBar=document.getElementById('quizBar');
+
+/* Praise phrases kept simple and clear for second-language English users */
+const CHEERS=['Correct','Well done','Exactly right','Perfect','You got it',
+              'Nice work','Very good','That is right','Excellent','Great answer',
+              'You know this','Strong answer','Good memory','Clear thinking','Keep it up',
+              'Well remembered','Good work','Right answer','Smart work','Very nice'];
+/* Shown before you answer anything */
+const STARTERS=['Ready to start','You can do this','One card at a time',
+                'Take your time','Let us begin','Step by step'];
+/* ❦ ❧ ☙ ❥ ♥ ♡ ✿ ❀ ❁ ✾ ❃ ❋ ✽ ❉ ☘ ⚜ ⚘ ⁕ */
+const ORNAMENTS=['\u2766','\u2767','\u2619','\u2765','\u2665','\u2661',
+                 '\u273F','\u2740','\u2741','\u273E','\u2743','\u274B',
+                 '\u273D','\u2749','\u2618','\u269C','\u2698','\u2055'];
+function cheerHtml(seed){
+  const c=CHEERS[seed%CHEERS.length];
+  const o=ORNAMENTS[(seed*7+3)%ORNAMENTS.length];
+  const o2=ORNAMENTS[(seed*13+5)%ORNAMENTS.length];
+  return '<div class="cheer"><span class="orn">'+o+'</span><span>'+c+
+         '</span><span class="rule"></span><span class="orn-r">'+o2+'</span></div>';
+}
+/* Fixed bottom bar cheer */
+const bottomCheer=document.getElementById('bottomCheer');
+function paintBottom(text,seed,pop){
+  if(!bottomCheer)return;
+  const o=ORNAMENTS[(seed*7+3)%ORNAMENTS.length];
+  const o2=ORNAMENTS[(seed*13+5)%ORNAMENTS.length];
+  bottomCheer.innerHTML='<span class="orn">'+o+'</span><span class="fc-txt">'+text+
+                        '</span><span class="orn">'+o2+'</span>';
+  if(pop){
+    bottomCheer.classList.remove('pop');
+    void bottomCheer.offsetWidth;          // force reflow so the animation replays
+    bottomCheer.classList.add('pop');
+    setTimeout(()=>bottomCheer.classList.remove('pop'),1600);
+  }
+}
+function setBottomCheer(seed,pop){paintBottom(CHEERS[seed%CHEERS.length],seed,pop);}
+function setBottomStarter(){
+  const s=Math.floor(Math.random()*10000);
+  paintBottom(STARTERS[s%STARTERS.length],s,false);
+}
+
+function renderQuizChips(){
+  quizFilters.innerHTML='';
+  ['thermo','heat','hvac','dyn','stress'].forEach(k=>{
+    const answered=quizzes[k].filter((_,i)=>quizState[k+':'+i]).length;
+    const b=document.createElement('button');
+    b.className='chip'+(quizCat===k?' active':'');
+    b.innerHTML=catLabels[k]+' <span class="ct">'+answered+'/8</span>';
+    b.addEventListener('click',()=>{quizCat=k;renderQuiz();});
+    quizFilters.appendChild(b);
+  });
+}
+function renderQuiz(){
+  renderQuizChips();
+  const qs=quizzes[quizCat];
+  const answered=qs.filter((_,i)=>quizState[quizCat+':'+i]).length;
+  const correct=qs.filter((_,i)=>{const s=quizState[quizCat+':'+i];return s&&s.correct;}).length;
+  quizMeta.textContent=answered+' / '+qs.length+' answered';
+  quizBar.style.width=(answered/qs.length*100)+'%';
+
+  let html='';
+  if(answered===qs.length){
+    const pct=Math.round(correct/qs.length*100);
+    let verdict = pct>=87?'Excellent. You know this section well.'
+                : pct>=62?'Good. Review the questions you missed.'
+                : 'Study these cards again before you continue.';
+    const flourish = pct===100 ? '<div style="font-size:20px;letter-spacing:8px;opacity:.55;margin-bottom:4px">\u2766\u2665\u2767</div>' : '';
+    html+='<div class="score-box">'+flourish+'<div class="score-num">'+correct+' / '+qs.length+'</div>'+
+          '<div class="score-sub">'+pct+'% · '+verdict+'</div>'+
+          '<button class="primary" style="margin:1rem auto 0" onclick="resetQuiz(\''+quizCat+'\')">Retake this quiz</button></div>';
+  }
+
+  qs.forEach((q,i)=>{
+    const key=quizCat+':'+i;
+    const st=quizState[key];
+    html+='<div class="q-card"><div class="q-head"><span class="q-num">QUESTION '+(i+1)+' OF '+qs.length+'</span>'+
+          '<span class="cat-badge cat-'+quizCat+'">'+catLabels[quizCat]+'</span></div>';
+    html+='<div class="q-text">'+q.q+'</div>';
+    if(q.type==='mc'){
+      html+='<div class="opts">';
+      q.opts.forEach((o,oi)=>{
+        let cls='opt';
+        if(st){
+          if(oi===q.ans)cls+=' correct';
+          else if(oi===st.given)cls+=' wrong';
+          else cls+=' dim';
+        }
+        html+='<button class="'+cls+'" '+(st?'disabled':'')+' data-mc="'+i+'" data-opt="'+oi+'">'+
+              String.fromCharCode(65+oi)+'. '+o+'</button>';
+      });
+      html+='</div>';
+    } else {
+      html+='<div class="num-row"><input type="text" inputmode="decimal" id="numin-'+i+'" placeholder="your answer" '+
+            (st?'value="'+st.given+'" disabled':'')+'>'+
+            (q.unit?'<span class="num-unit">'+q.unit+'</span>':'')+
+            (st?'':'<button data-num="'+i+'">Check</button>')+'</div>';
+    }
+    if(st){
+      if(st.correct) html+=cheerHtml(st.seed!==undefined?st.seed:i);
+      html+='<div class="feedback '+(st.correct?'ok':'no')+'">'+
+            '<b>'+(st.correct?'Correct.':'Not quite.')+'</b> '+
+            (q.type==='num'&&!st.correct?('Answer: '+q.ans+(q.unit?' '+q.unit:'')+'. '):'')+
+            q.why+'</div>';
+    }
+    html+='</div>';
+  });
+  quizBody.innerHTML=html;
+
+  quizBody.querySelectorAll('[data-mc]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const i=Number(b.dataset.mc),oi=Number(b.dataset.opt);
+      const seed=Math.floor(Math.random()*10000);
+      const ok=oi===quizzes[quizCat][i].ans;
+      quizState[quizCat+':'+i]={given:oi,correct:ok,seed:seed};
+      save();renderQuiz();
+      if(ok)setBottomCheer(seed,true);
+    });
+  });
+  quizBody.querySelectorAll('[data-num]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const i=Number(b.dataset.num);
+      const raw=document.getElementById('numin-'+i).value.trim();
+      if(raw==='')return;
+      const v=parseFloat(raw.replace(/,/g,''));
+      const q=quizzes[quizCat][i];
+      const ok=!isNaN(v)&&Math.abs(v-q.ans)<=q.tol;
+      const seed=Math.floor(Math.random()*10000);
+      quizState[quizCat+':'+i]={given:raw,correct:ok,seed:seed};
+      save();renderQuiz();
+      if(ok)setBottomCheer(seed,true);
+    });
+  });
+  quizBody.querySelectorAll('input[id^="numin-"]').forEach(inp=>{
+    inp.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){
+        const i=inp.id.split('-')[1];
+        const btn=quizBody.querySelector('[data-num="'+i+'"]');
+        if(btn)btn.click();
+      }
+    });
+  });
+}
+function resetQuiz(cat){
+  quizzes[cat].forEach((_,i)=>{delete quizState[cat+':'+i];});
+  save();renderQuiz();
+}
+window.resetQuiz=resetQuiz;
+
+/* ══════════ PROBLEMS ══════════ */
+const probBody=document.getElementById('probBody'),probFilters=document.getElementById('probFilters'),
+      probMeta=document.getElementById('probMeta');
+function renderProbChips(){
+  probFilters.innerHTML='';
+  categories.forEach(cat=>{
+    const ct=cat.key==='all'?problems.length:problems.filter(p=>p.c===cat.key).length;
+    if(ct===0)return;
+    const b=document.createElement('button');
+    b.className='chip'+(probCat===cat.key?' active':'');
+    b.innerHTML=cat.label+' <span class="ct">'+ct+'</span>';
+    b.addEventListener('click',()=>{probCat=cat.key;renderProbs();});
+    probFilters.appendChild(b);
+  });
+}
+function renderProbs(){
+  renderProbChips();
+  const list=probCat==='all'?problems:problems.filter(p=>p.c===probCat);
+  probMeta.textContent=list.length+' problem'+(list.length===1?'':'s');
+  let html='';
+  list.forEach((p,i)=>{
+    const gi=problems.indexOf(p);
+    const open=!!openSteps[gi];
+    html+='<div class="p-card">';
+    html+='<div class="q-head"><span class="q-num">PROBLEM '+(i+1)+'</span>'+
+          '<span class="cat-badge cat-'+p.c+'">'+catLabels[p.c]+'</span></div>';
+    html+='<div class="p-title">'+p.t+'</div>';
+    html+='<div class="p-stem">'+p.stem+'</div>';
+    html+='<div class="p-given">'+p.given.replace(/\n/g,'<br>')+'</div>';
+    html+='<button class="mini-btn" data-toggle="'+gi+'">'+(open?'▾ Hide solution':'▸ Show worked solution')+'</button>';
+    html+='<div class="steps-wrap'+(open?' open':'')+'" style="margin-top:.9rem">';
+    p.steps.forEach((s,si)=>{
+      html+='<div class="step"><div class="step-h">'+(si+1)+'. '+s.h+'</div>';
+      if(s.b)html+='<div class="step-b">'+s.b+'</div>';
+      if(s.eq)html+='<code class="step-eq">'+s.eq.replace(/\n/g,'<br>')+'</code>';
+      html+='</div>';
+    });
+    html+='<div class="p-answer">'+p.answer+'</div>';
+    html+='</div></div>';
+  });
+  probBody.innerHTML=html;
+  probBody.querySelectorAll('[data-toggle]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const gi=b.dataset.toggle;
+      openSteps[gi]=!openSteps[gi];
+      renderProbs();
+    });
+  });
+}
+
+/* ══════════ PLAN ══════════ */
+const planBody=document.getElementById('planBody'),
+      startDateEl=document.getElementById('startDate'),startTimeEl=document.getElementById('startTime');
+function pad(n){return String(n).padStart(2,'0');}
+function dayDate(di){
+  const base=startDateEl.value||'2026-08-13';
+  const [y,m,d]=base.split('-').map(Number);
+  const dt=new Date(y,m-1,d); dt.setDate(dt.getDate()+di); return dt;
+}
+function fmtDate(dt){return dt.toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});}
+function blockClock(di,off){
+  const [hh,mm]=(startTimeEl.value||'09:00').split(':').map(Number);
+  const dt=dayDate(di); dt.setHours(hh,mm+off,0,0); return dt;
+}
+function fmtTime(dt){return dt.toLocaleTimeString(undefined,{hour:'numeric',minute:'2-digit'});}
+
+function renderPlan(){
+  planBody.innerHTML='';
+  let totalB=0,doneB=0;
+  planDays.forEach((day,di)=>{
+    const wrap=document.createElement('div');
+    wrap.className='day-block';
+    wrap.innerHTML='<div class="day-head"><div>'+
+      '<div class="day-title"><span class="daynum">Day '+day.day+'</span>'+fmtDate(dayDate(di))+'</div>'+
+      '<div class="day-theme">'+day.theme+'</div></div>'+
+      '<div class="day-range">'+fmtTime(blockClock(di,0))+' – '+fmtTime(blockClock(di,90))+' · 90 min</div></div>';
+    day.blocks.forEach(b=>{
+      const isBreak=b.type==='break';
+      if(!isBreak)totalB++;
+      const done=!!planDone[b.id];
+      if(!isBreak&&done)doneB++;
+      const el=document.createElement('div');
+      el.className='block'+(isBreak?' is-break':'')+(done?' is-done':'');
+      let h='';
+      h+=isBreak?'<div style="flex:0 0 18px"></div>'
+                :'<button class="block-check'+(done?' checked':'')+'" data-check="'+b.id+'">'+(done?'✓':'')+'</button>';
+      h+='<div class="block-time">'+fmtTime(blockClock(di,b.off))+'<br><span style="opacity:.6">'+fmtTime(blockClock(di,b.off+b.dur))+'</span></div>';
+      h+='<div class="block-body"><div class="block-title">'+b.title+'</div>';
+      if(b.detail)h+='<div class="block-detail">'+b.detail+'</div>';
+      if(!isBreak){
+        h+='<div class="block-actions">';
+        h+='<button class="mini-btn" data-timer="'+b.id+'" data-dur="'+b.dur+'" data-title="'+b.title.replace(/"/g,'&quot;')+'">▶ '+b.dur+'-min timer</button>';
+        if(b.type==='study'||b.type==='recall')h+='<button class="mini-btn" data-go="study" data-cat="'+(b.cat||'all')+'">→ Open cards</button>';
+        if(b.type==='quiz')h+='<button class="mini-btn" data-go="quiz" data-cat="'+(b.cat||'thermo')+'">→ Open quiz</button>';
+        if(b.type==='prob')h+='<button class="mini-btn" data-go="probs" data-cat="'+(b.cat||'all')+'">→ Open problems</button>';
+        h+='</div>';
+      }
+      h+='</div><div class="block-dur">'+b.dur+'m</div>';
+      el.innerHTML=h;
+      wrap.appendChild(el);
+    });
+    planBody.appendChild(wrap);
+  });
+  document.getElementById('plan-done').textContent=doneB;
+  document.getElementById('plan-total').textContent=totalB;
+  document.getElementById('plan-bar').style.width=totalB?(doneB/totalB*100)+'%':'0%';
+
+  planBody.querySelectorAll('[data-check]').forEach(b=>{
+    b.addEventListener('click',()=>{planDone[b.dataset.check]=!planDone[b.dataset.check];save();renderPlan();});
+  });
+  planBody.querySelectorAll('[data-timer]').forEach(b=>{
+    b.addEventListener('click',()=>startTimer(b.dataset.title,Number(b.dataset.dur)));
+  });
+  planBody.querySelectorAll('[data-go]').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const v=b.dataset.go,c=b.dataset.cat;
+      if(v==='study'){activeCat=c;rebuildOrder();pos=0;flipped=false;renderStudy();}
+      if(v==='quiz'){quizCat=(c==='all'?'thermo':c);renderQuiz();}
+      if(v==='probs'){probCat=c;renderProbs();}
+      switchTo(v);
+    });
+  });
+}
+startDateEl.addEventListener('change',()=>{save();renderPlan();});
+startTimeEl.addEventListener('change',()=>{save();renderPlan();});
+document.getElementById('resetPlan').addEventListener('click',()=>{
+  planDone={};quizState={};cards.forEach(c=>c.status='new');
+  save();renderPlan();rebuildOrder();pos=0;flipped=false;renderStudy();renderQuiz();
+});
+
+/* ══════════ TIMER ══════════ */
+let timerId=null,timerRemaining=0,timerRunning=false;
+const timerBar=document.getElementById('timerBar'),timerClock=document.getElementById('timerClock'),
+      timerTitle=document.getElementById('timerTitle'),timerSub=document.getElementById('timerSub'),
+      timerToggle=document.getElementById('timerToggle');
+function startTimer(title,minutes){
+  clearInterval(timerId);
+  timerRemaining=minutes*60;timerRunning=true;
+  timerTitle.textContent=title;timerSub.textContent=minutes+' minute block';
+  timerBar.classList.add('active');timerToggle.textContent='Pause';
+  paintTimer();
+  timerId=setInterval(()=>{if(timerRunning){timerRemaining--;paintTimer();}},1000);
+}
+function paintTimer(){
+  const over=timerRemaining<0,v=Math.abs(timerRemaining);
+  timerClock.textContent=(over?'+':'')+pad(Math.floor(v/60))+':'+pad(v%60);
+  timerClock.classList.toggle('overtime',over);
+  if(timerRemaining===0){
+    timerSub.textContent='Time — move to the next block';
+    try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}
+  }
+}
+timerToggle.addEventListener('click',()=>{timerRunning=!timerRunning;timerToggle.textContent=timerRunning?'Pause':'Resume';});
+document.getElementById('timerStop').addEventListener('click',()=>{
+  clearInterval(timerId);timerId=null;timerRunning=false;timerBar.classList.remove('active');
+});
+
+/* ══════════ ICS ══════════ */
+function icsEscape(s){return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\n');}
+function icsFold(line){
+  if(line.length<=73)return line;
+  let out=line.slice(0,73),rest=line.slice(73);
+  while(rest.length>0){out+='\r\n '+rest.slice(0,72);rest=rest.slice(72);}
+  return out;
+}
+function icsLocal(dt){return dt.getFullYear()+pad(dt.getMonth()+1)+pad(dt.getDate())+'T'+pad(dt.getHours())+pad(dt.getMinutes())+'00';}
+function icsStamp(){const d=new Date();return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';}
+function buildIcs(){
+  const L=['BEGIN:VCALENDAR','VERSION:2.0',
+           'PRODID:-//Eng. Albaraa Alghamdi//Mech Eng 3-Day Sprint//EN','CALSCALE:GREGORIAN',
+           'METHOD:PUBLISH','X-WR-CALNAME:Mech Eng 3-Day Sprint',
+           icsFold('X-WR-CALDESC:'+icsEscape('Mechanical engineering 3-day retrieval sprint. Made by Eng. Albaraa Alghamdi. © 2026'))];
+  const stamp=icsStamp();
+  planDays.forEach((day,di)=>{
+    day.blocks.forEach(b=>{
+      if(b.type==='break')return;
+      const s=blockClock(di,b.off),e=blockClock(di,b.off+b.dur);
+      const summary='Day '+day.day+' · '+b.title;
+      const desc=(b.detail||'')+(b.cat&&b.cat!=='all'?'\n\nSection: '+catLabels[b.cat]:'');
+      L.push('BEGIN:VEVENT');
+      L.push('UID:'+b.id+'-'+s.getTime()+'@mecheng-sprint');
+      L.push('DTSTAMP:'+stamp);
+      L.push('DTSTART:'+icsLocal(s));
+      L.push('DTEND:'+icsLocal(e));
+      L.push(icsFold('SUMMARY:'+icsEscape(summary)));
+      if(desc)L.push(icsFold('DESCRIPTION:'+icsEscape(desc)));
+      L.push('BEGIN:VALARM','TRIGGER:-PT5M','ACTION:DISPLAY',
+             icsFold('DESCRIPTION:'+icsEscape(summary)),'END:VALARM');
+      L.push('END:VEVENT');
+    });
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n');
+}
+document.getElementById('downloadIcs').addEventListener('click',()=>{
+  const blob=new Blob([buildIcs()],{type:'text/calendar;charset=utf-8'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='mecheng-3day-sprint.ics';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+
+/* ══════════ INIT ══════════ */
+load();
+rebuildOrder();renderChips();renderStudy();
+renderQuiz();renderProbs();renderPlan();
+setBottomStarter();
+</script>
+</body>
+</html>
